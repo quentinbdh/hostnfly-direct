@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HostnFly – 2 000 logements d'exception en France</title>
+<meta name="description" content="Réservez directement votre logement de vacances parmi 2 000 adresses d'exception gérées par HostnFly, conciergerie experte en France. Ski, mer, villes — meilleur prix garanti."/>
+<meta name="robots" content="index, follow"/>
+<meta name="author" content="HostnFly"/>
+<link rel="canonical" href="https://booking.hostnfly.com"/>
+<link rel="alternate" hreflang="fr" href="https://booking.hostnfly.com"/>
+
+<!-- Open Graph -->
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="fr_FR"/>
+<meta property="og:site_name" content="HostnFly"/>
+<meta property="og:title" content="HostnFly – 2 000 logements d'exception en France"/>
+<meta property="og:description" content="Réservez directement votre logement de vacances parmi 2 000 adresses d'exception gérées par HostnFly. Ski, mer, villes — meilleur prix garanti."/>
+<meta property="og:url" content="https://booking.hostnfly.com"/>
+<meta property="og:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&h=630&q=80"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="Paysage montagne en France – HostnFly"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="HostnFly – 2 000 logements d'exception en France"/>
+<meta name="twitter:description" content="Réservez directement votre logement de vacances parmi 2 000 adresses d'exception gérées par HostnFly. Meilleur prix garanti."/>
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&h=630&q=80"/>
+
+<!-- Preconnect for performance -->
+<link rel="preconnect" href="https://images.unsplash.com"/>
+<link rel="preconnect" href="https://cdn.tailwindcss.com"/>
+<link rel="preconnect" href="https://unpkg.com"/>
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1920&q=80"/>
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://booking.hostnfly.com/#organization",
+      "name": "HostnFly",
+      "url": "https://www.hostnfly.com",
+      "logo": "https://www.hostnfly.com/images/logo.svg",
+      "description": "Conciergerie Airbnb leader en France. 2 000 logements gérés par des experts locaux.",
+      "sameAs": ["https://fr.trustpilot.com/review/www.hostnfly.com"],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.6",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "300",
+        "reviewCount": "300"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "availableLanguage": "French",
+        "email": "contact@hostnfly.com",
+        "hoursAvailable": {
+          "@type": "OpeningHoursSpecification",
+          "opens": "08:00",
+          "closes": "22:00",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+        }
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://booking.hostnfly.com/#website",
+      "url": "https://booking.hostnfly.com",
+      "name": "HostnFly – Réservation directe",
+      "publisher": {"@id": "https://booking.hostnfly.com/#organization"},
+      "inLanguage": "fr-FR",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://travel.hostnfly.com/fr/destinations/{search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://booking.hostnfly.com/#webpage",
+      "url": "https://booking.hostnfly.com",
+      "name": "HostnFly – 2 000 logements d'exception en France",
+      "description": "Réservez directement votre logement de vacances parmi 2 000 adresses d'exception gérées par HostnFly, conciergerie experte en France.",
+      "isPartOf": {"@id": "https://booking.hostnfly.com/#website"},
+      "about": {"@id": "https://booking.hostnfly.com/#organization"},
+      "inLanguage": "fr-FR",
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [{"@type":"ListItem","position":1,"name":"Accueil","item":"https://booking.hostnfly.com"}]
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        hnf: { DEFAULT: '#014fff', light: '#dce0fb', dark: '#0140cc' },
+        dark: '#101923',
+      }
+    }
+  }
+}
+</script>
+<style>
+  *{box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;color:#101923;background:#fff}
+  #map-container{height:520px;width:100%;border-radius:16px;z-index:1}
+  .map-sticky{position:sticky;top:80px}
+  .cal-wrap{position:fixed;z-index:9999;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.18);padding:24px;display:none}
+  .cal-wrap.open{display:flex;gap:32px}
+  .cal-month-grid{display:grid;grid-template-columns:repeat(7,36px);gap:4px}
+  .cal-day{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;font-size:.875rem;transition:background .15s}
+  .cal-day:hover:not(.cal-empty):not(.cal-past){background:#dce0fb;color:#014fff}
+  .cal-day.cal-past{opacity:.35;cursor:default}
+  .cal-day.cal-empty{cursor:default}
+  .cal-day.cal-selected{background:#014fff!important;color:#fff!important;border-radius:50%!important}
+  .cal-day.cal-in-range{background:#dce0fb;border-radius:0}
+  .cal-day.cal-range-start{background:#014fff;color:#fff;border-radius:50% 0 0 50%}
+  .cal-day.cal-range-end{background:#014fff;color:#fff;border-radius:0 50% 50% 0}
+  .sf-active{background:#f0f4ff;outline:2px solid #014fff}
+  .dest-drop{position:fixed;width:340px;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.14);z-index:9999;overflow:hidden;display:none}
+  .dest-drop.open{display:block}
+  .dest-item{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:background .12s}
+  .dest-item:hover{background:#f0f4ff}
+  .dest-item img{width:40px;height:40px;object-fit:cover;border-radius:8px;flex-shrink:0}
+  #guest-picker{position:fixed;width:300px;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.14);z-index:9999;padding:16px}
+  .dest-card{transition:transform .18s,box-shadow .18s}
+  .dest-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(1,79,255,.15)}
+  .faq-answer{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .faq-answer.open{max-height:400px}
+  .faq-chevron{transition:transform .3s}
+  .faq-chevron.open{transform:rotate(180deg)}
+  #navbar{transition:box-shadow .2s}
+  #nav-search-compact{opacity:0;pointer-events:none;transition:opacity .2s}
+  #navbar.scrolled #nav-search-compact{opacity:1;pointer-events:all}
+  .tp-star{color:#00B67A;font-size:1.1rem}
+  #email-popup{display:none;position:fixed;inset:0;z-index:200;align-items:center;justify-content:center}
+  #email-popup.show{display:flex}
+  .cat-pill{cursor:pointer;border-radius:9999px;padding:6px 16px;font-size:.875rem;font-weight:500;border:1.5px solid #e5e7eb;transition:all .15s}
+  .cat-pill.active{background:#014fff;color:#fff;border-color:#014fff}
+  .cat-pill:hover:not(.active){background:#f0f4ff;border-color:#014fff;color:#014fff}
+  html{scroll-behavior:smooth}
+  @media(max-width:768px){
+    .cal-wrap.open{flex-direction:column;gap:16px}
+    #map-container{height:300px}
+    .map-sticky{position:static}
+  }
+</style>
+</head>
+<body class="bg-white">
+
+<!-- NAVBAR -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+    <a href="/" class="flex-shrink-0">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 673.17 134.68" height="32" style="width:auto">
+        <defs>
+          <style>.lc1{fill:none}.lc2{clip-path:url(#lcp1)}.lc3{fill:#dce0fb}.lc4{clip-path:url(#lcp2)}.lc5{fill:#014fff}.lc6{clip-path:url(#lcp3)}.lc7{fill:#101923}.lc8{clip-path:url(#lcp4)}</style>
+          <clipPath id="lcp1" transform="translate(3.95 3.95)"><path class="lc1" d="M28.7,5c-6.79,0-12.77,5-12.77,11.82A13.12,13.12,0,0,0,28.7,29.63H68.2a4.89,4.89,0,1,1,0,9.78l-55.9-.48a12.3,12.3,0,0,0,0,24.6L58.11,64a4.89,4.89,0,0,1,0,9.78H50.65a12.3,12.3,0,1,0,0,24.59h90.53L140.9,5Z"/></clipPath>
+          <clipPath id="lcp2" transform="translate(3.95 3.95)"><path class="lc1" d="M109.16,13.15a44.87,44.87,0,0,0,0,63.47L127.52,95a18.91,18.91,0,0,0,26.75,0l18.37-18.36a44.88,44.88,0,1,0-63.48-63.47"/></clipPath>
+          <clipPath id="lcp3" transform="translate(3.95 3.95)"><path class="lc1" d="M645.78,43.12l-14,38.71L617.7,43.12h-20l24.4,60.13-9.57,23.53h18.68l34-83.66ZM311.46,84.33a14.76,14.76,0,0,1-4.23-10.76,14.69,14.69,0,0,1,4.23-10.75,15.49,15.49,0,0,1,21.4,0,14.67,14.67,0,0,1,4.26,10.75,14.74,14.74,0,0,1-4.26,10.76,15.41,15.41,0,0,1-21.4,0M298.64,50.8a30.47,30.47,0,0,0-9.39,22.77,30.56,30.56,0,0,0,9.39,22.79q9.41,9.17,23.5,9.17t23.5-9.17A30.57,30.57,0,0,0,355,73.57a30.48,30.48,0,0,0-9.4-22.77q-9.4-9.13-23.5-9.14t-23.5,9.14m67.58-4q-6.56,5.13-6.56,14.12-.06,14.77,19.2,19.33,9.81,2.16,9.81,6.71a4.08,4.08,0,0,1-1.72,3.3,6.55,6.55,0,0,1-4.23,1.37,6.48,6.48,0,0,1-4.56-1.78,5.64,5.64,0,0,1-1.92-4.29H358.78a17.93,17.93,0,0,0,6.83,14.16q6.83,5.81,17,5.81t16.78-5.37q6.75-5.37,6.75-14.72a18.48,18.48,0,0,0-1.55-7.79,14.1,14.1,0,0,0-4.47-5.52,29.17,29.17,0,0,0-5.89-3.41,43.29,43.29,0,0,0-7-2.19q-10.15-2.4-10.16-6.83a3.72,3.72,0,0,1,1.49-2.89,5.45,5.45,0,0,1,3.65-1.26,5.56,5.56,0,0,1,4,1.55,5,5,0,0,1,1.6,3.71h17.46a17.14,17.14,0,0,0-6.57-13.6q-6.57-5.55-16.38-5.55-9.57,0-16.14,5.14m109.12,3V43.12H457.89v61h17.45V71a12,12,0,0,1,3.53-9A12.66,12.66,0,0,1,488,58.53a11.24,11.24,0,0,1,8.49,3.36,12.21,12.21,0,0,1,3.25,8.84v33.34H517.2V64.84q0-10.52-6.42-16.85t-16.93-6.33q-11.5,0-18.51,8.11M422,29V43.12H410.8V60.49H422v43.58h17.46V60.49H451.2V43.12H439.41v-18ZM264.81,21.58v34a33.72,33.72,0,0,0-15.56-3.79H231.71V21.58H213.15v82.49h18.56V70.2h17.54a15.64,15.64,0,0,1,15.56,14.43v19.44h18.51V21.58ZM576,104.07h17.46V21.58H576ZM524.43,21.58v82.49h18.45V86.61l0-3.5a12.48,12.48,0,0,1,.35-2,12.91,12.91,0,0,1,2-4.32,13.12,13.12,0,0,1,1.6-1.82,13.31,13.31,0,0,1,1.92-1.49,12.91,12.91,0,0,1,4.48-1.78l.3-.06.3,0,.3,0h.16l.15,0c.2,0,.41,0,.61,0l.31,0h.4l4.09,0,5.72-.08V54L559.93,54l-4.09,0H554.5c-.48,0-1,0-1.43.08l-.35,0-.36,0-.71.08-.71.09-.71.12a30.65,30.65,0,0,0-5.54,1.49c-.57.21-1.14.45-1.7.69V39h27.27V21.58Z"/></clipPath>
+          <clipPath id="lcp4" transform="translate(3.95 3.95)"><path class="lc1" d="M136.7,109.16a6.51,6.51,0,1,0,0,13h9a6.51,6.51,0,1,0,0-13Z"/></clipPath>
+        </defs>
+        <g><g class="lc2"><rect class="lc3" y="5.04" width="149.08" height="101.23"/></g><g class="lc4"><rect class="lc5" x="96.01" width="97.67" height="108.42"/></g><g class="lc6"><rect class="lc7" x="213.14" y="21.58" width="460.03" height="113.1"/></g><g class="lc8"><rect class="lc7" x="130.19" y="109.16" width="29.89" height="20.93"/></g></g>
+      </svg>
+    </a>
+    <div id="nav-search-compact" class="flex-1 max-w-md">
+      <button onclick="document.getElementById('hero').scrollIntoView({behavior:'smooth'})" class="w-full flex items-center gap-3 px-4 py-2 border border-gray-200 rounded-full shadow-sm hover:shadow-md transition-shadow text-sm text-gray-500">
+        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
+        <span>Destination · Dates · Voyageurs</span>
+      </button>
+    </div>
+    <div class="flex items-center gap-3 flex-shrink-0">
+      <a href="https://www.hostnfly.com" target="_blank" class="hidden md:inline-flex text-sm font-medium text-gray-700 hover:text-[#014fff] transition-colors">Mettre mon logement en location</a>
+      <a href="https://travel.hostnfly.com/fr/rentals/search" target="_blank" class="inline-flex items-center gap-1.5 bg-[#014fff] text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-[#0140cc] transition-colors">
+        Tous les logements
+      </a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<!-- HERO -->
+<section id="hero" class="relative flex items-center pt-16 overflow-hidden" style="min-height:520px">
+  <div class="absolute inset-0 z-0">
+    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1920&q=80" alt="Logements de vacances en France – Chamonix, Côte d'Azur, Paris" class="w-full h-full object-cover" fetchpriority="high" decoding="async"/>
+    <div class="absolute inset-0 bg-gradient-to-b from-[#101923]/70 via-[#101923]/50 to-[#101923]/80"></div>
+  </div>
+  <div class="relative z-10 w-full max-w-5xl mx-auto px-4 py-20 flex flex-col items-center text-center">
+    <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm text-white text-sm font-medium px-4 py-2 rounded-full mb-6 border border-white/20">
+      <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+      Logements vérifiés · Experts locaux · Service 7j/7
+    </div>
+    <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight mb-4">
+      2 000 logements d'exception<br/>
+      <span class="text-[#dce0fb]">en France</span>
+    </h1>
+    <p class="text-lg md:text-xl text-white/80 mb-10 max-w-2xl">gérés par des experts locaux</p>
+
+    <!-- SEARCH BAR -->
+    <div id="main-search" class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-2 md:p-3 relative">
+      <div class="flex flex-col md:flex-row gap-2 md:gap-0 md:items-stretch">
+        <!-- Destination -->
+        <div class="relative flex-1 md:border-r border-gray-200">
+          <div id="sf-dest" class="px-4 py-3 rounded-xl cursor-text" onclick="document.getElementById('dest-input').focus()">
+            <div class="text-xs font-semibold text-gray-500 mb-0.5">Destination</div>
+            <input id="dest-input" type="text" placeholder="Où souhaitez-vous aller ?" autocomplete="off"
+              class="w-full text-sm font-medium text-gray-800 placeholder-gray-400 outline-none bg-transparent"
+              oninput="onDestInput(this.value)" onfocus="openDestDrop()"/>
+          </div>
+          <div id="dest-drop" class="dest-drop"></div>
+        </div>
+        <!-- Checkin -->
+        <div class="relative flex-shrink-0">
+          <div id="sf-checkin" class="px-4 py-3 rounded-xl cursor-pointer min-w-[140px]" onclick="openCal('checkin')">
+            <div class="text-xs font-semibold text-gray-500 mb-0.5">Arrivée</div>
+            <div id="checkin-display" class="text-sm font-medium text-gray-400">Ajouter une date</div>
+          </div>
+        </div>
+        <!-- Checkout -->
+        <div class="relative flex-shrink-0 md:border-r border-gray-200">
+          <div id="sf-checkout" class="px-4 py-3 rounded-xl cursor-pointer min-w-[140px]" onclick="openCal('checkout')">
+            <div class="text-xs font-semibold text-gray-500 mb-0.5">Départ</div>
+            <div id="checkout-display" class="text-sm font-medium text-gray-400">Ajouter une date</div>
+          </div>
+        </div>
+        <!-- Guests -->
+        <div class="relative flex-shrink-0">
+          <div id="sf-guests" class="px-4 py-3 rounded-xl cursor-pointer min-w-[160px]" onclick="toggleGuestPicker(event)">
+            <div class="text-xs font-semibold text-gray-500 mb-0.5">Voyageurs</div>
+            <div id="guests-display" class="text-sm font-medium text-gray-400">Ajouter des voyageurs</div>
+          </div>
+          <div id="guest-picker" class="hidden">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between gap-4">
+                <div class="flex-1"><div class="font-medium text-gray-800 text-sm">Adultes</div><div class="text-xs text-gray-500 whitespace-nowrap">18 ans et +</div></div>
+                <div class="flex items-center gap-3 flex-shrink-0">
+                  <button onclick="adjustGuest('adults',-1)" class="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-[#014fff] hover:text-[#014fff] transition-colors font-bold text-lg">−</button>
+                  <span id="adults-count" class="w-6 text-center font-semibold text-sm">1</span>
+                  <button onclick="adjustGuest('adults',1)" class="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-[#014fff] hover:text-[#014fff] transition-colors font-bold text-lg">+</button>
+                </div>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <div class="flex-1"><div class="font-medium text-gray-800 text-sm">Enfants</div><div class="text-xs text-gray-500 whitespace-nowrap">3 à 17 ans</div></div>
+                <div class="flex items-center gap-3 flex-shrink-0">
+                  <button onclick="adjustGuest('children',-1)" class="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-[#014fff] hover:text-[#014fff] transition-colors font-bold text-lg">−</button>
+                  <span id="children-count" class="w-6 text-center font-semibold text-sm">0</span>
+                  <button onclick="adjustGuest('children',1)" class="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-[#014fff] hover:text-[#014fff] transition-colors font-bold text-lg">+</button>
+                </div>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <div class="flex-1"><div class="font-medium text-gray-800 text-sm">Bébés</div><div class="text-xs text-gray-500 whitespace-nowrap">Moins de 3 ans</div></div>
+                <div class="flex items-center gap-3 flex-shrink-0">
+                  <button onclick="adjustGuest('babies',-1)" class="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-[#014fff] hover:text-[#014fff] transition-colors font-bold text-lg">−</button>
+                  <span id="babies-count" class="w-6 text-center font-semibold text-sm">0</span>
+                  <button onclick="adjustGuest('babies',1)" class="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-[#014fff] hover:text-[#014fff] transition-colors font-bold text-lg">+</button>
+                </div>
+              </div>
+              <button onclick="document.getElementById('guest-picker').classList.add('hidden')" class="w-full bg-[#014fff] text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-[#0140cc] transition-colors">Valider</button>
+            </div>
+          </div>
+        </div>
+        <!-- Search button -->
+        <div class="flex items-center px-2">
+          <button onclick="doSearch()" class="bg-[#014fff] hover:bg-[#0140cc] text-white font-bold px-6 py-3.5 rounded-xl transition-colors flex items-center gap-2 w-full md:w-auto justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
+            <span>Rechercher</span>
+          </button>
+        </div>
+      </div>
+      <!-- Calendar (inside main-search for click detection) -->
+      <div id="cal-wrap" class="cal-wrap">
+        <div id="cal-month-1"></div>
+        <div id="cal-month-2"></div>
+      </div>
+    </div>
+
+    <!-- Quick tags -->
+    <div class="flex flex-wrap items-center justify-center gap-2 mt-6">
+      <span class="text-white/60 text-sm">Populaires :</span>
+      <button onclick="setDestAndSearch('chamonix','Chamonix')" class="bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Chamonix</button>
+      <button onclick="setDestAndSearch('cannes','Cannes')" class="bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Cannes</button>
+      <button onclick="setDestAndSearch('saint-tropez','Saint-Tropez')" class="bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Saint-Tropez</button>
+      <button onclick="setDestAndSearch('megeve','Megève')" class="bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Megève</button>
+      <button onclick="setDestAndSearch('paris','Paris')" class="bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Paris</button>
+      <button onclick="setDestAndSearch('saint-raphael','Saint-Raphaël')" class="bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Saint-Raphaël</button>
+    </div>
+  </div>
+</section>
+
+<!-- TRUSTPILOT -->
+<section class="bg-white py-6 border-b border-gray-100" style="position:relative;z-index:1">
+  <div class="max-w-4xl mx-auto px-4 flex flex-wrap items-center justify-center gap-4 md:gap-8">
+    <div class="flex items-center gap-2">
+      <svg viewBox="0 0 32 32" width="28" height="28"><rect width="32" height="32" rx="3" fill="#00B67A"/><path d="M16 6l3.09 9.5H29l-8.09 5.87 3.09 9.5L16 25.87 7 30.87l3.09-9.5L2 15.5h9.91z" fill="#fff"/></svg>
+      <span class="font-bold text-gray-800 text-lg">Trustpilot</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="font-bold text-gray-800">Excellent</span>
+      <div class="flex">
+        <span class="tp-star">★★★★</span><span style="color:#00B67A;font-size:1.1rem;opacity:0.6">★</span>
+      </div>
+      <span class="font-bold text-gray-800">4,6 / 5</span>
+    </div>
+    <div class="text-sm text-gray-500">Basé sur 300+ avis vérifiés</div>
+    <a href="https://fr.trustpilot.com/review/www.hostnfly.com" target="_blank" class="text-sm text-[#00B67A] font-medium hover:underline">Voir les avis →</a>
+  </div>
+</section>
+
+<!-- DESTINATIONS + CARTE -->
+<section class="py-16 bg-white" id="destinations">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="mb-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-2">Explorez nos destinations</h2>
+      <p class="text-gray-500 text-lg">Des logements d'exception dans toute la France</p>
+    </div>
+    <div class="flex flex-wrap gap-2 mb-8">
+      <button class="cat-pill active" data-cat="all" onclick="setCat('all',this)">Toutes</button>
+      <button class="cat-pill" data-cat="ski" onclick="setCat('ski',this)">⛷️ Ski &amp; Montagne</button>
+      <button class="cat-pill" data-cat="mer" onclick="setCat('mer',this)">🏖️ Bord de mer</button>
+      <button class="cat-pill" data-cat="ville" onclick="setCat('ville',this)">🏙️ Villes</button>
+    </div>
+    <div class="flex flex-col lg:flex-row gap-8">
+      <div class="w-full lg:w-[380px] flex-shrink-0">
+        <div class="map-sticky">
+          <div id="map-container"></div>
+          <div class="mt-3 flex flex-wrap gap-3 text-xs text-gray-600">
+            <span class="flex items-center gap-1.5"><span style="background:#014fff;width:12px;height:12px;border-radius:50%;display:inline-block"></span>Ski</span>
+            <span class="flex items-center gap-1.5"><span style="background:#ff5a3c;width:12px;height:12px;border-radius:50%;display:inline-block"></span>Mer</span>
+            <span class="flex items-center gap-1.5"><span style="background:#8b5cf6;width:12px;height:12px;border-radius:50%;display:inline-block"></span>Ville</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex-1">
+        <div id="dest-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+        <div class="mt-6 text-center" id="show-more-wrap">
+          <button id="show-more-btn" onclick="showAllDests()" class="inline-flex items-center gap-2 border-2 border-[#014fff] text-[#014fff] font-semibold px-6 py-3 rounded-xl hover:bg-[#014fff] hover:text-white transition-colors">
+            <span id="show-more-label">Voir les autres destinations</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COUPS DE COEUR -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="mb-10">
+      <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-2">Nos villas coup de cœur</h2>
+      <p class="text-gray-500 text-lg">Une sélection d'adresses d'exception gérées par HostnFly</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="coups-grid"></div>
+  </div>
+</section>
+
+<!-- TYPOLOGIES -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="mb-10">
+      <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-2">Trouvez le logement idéal</h2>
+      <p class="text-gray-500 text-lg">Des sélections pensées pour votre séjour</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- Piscine -->
+      <a href="https://travel.hostnfly.com/fr/rentals/search?amenity_mode=all&pool_private=1&rentals_tag_mode=all" target="_blank"
+         class="group relative rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-shadow block">
+        <div class="h-56 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1728479943088-2eaea8c0cc56?auto=format&fit=crop&w=800&q=80"
+               alt="Logements avec piscine privée en France" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#101923]/70 via-transparent to-transparent"></div>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-5">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-2xl">🏊</span>
+            <span class="text-white font-bold text-xl">Avec piscine</span>
+          </div>
+          <p class="text-white/80 text-sm">Profitez d'une piscine privée pour votre séjour</p>
+          <span class="inline-flex items-center gap-1 mt-3 text-[#dce0fb] text-sm font-semibold group-hover:gap-2 transition-all">
+            Voir les logements <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- Jardin -->
+      <a href="https://travel.hostnfly.com/fr/rentals/search?amenity_mode=all&garden=1&rentals_tag_mode=all" target="_blank"
+         class="group relative rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-shadow block">
+        <div class="h-56 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1578758509716-b9d9aabb85ec?auto=format&fit=crop&w=800&q=80"
+               alt="Maisons avec jardin en France" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#101923]/70 via-transparent to-transparent"></div>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-5">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-2xl">🌿</span>
+            <span class="text-white font-bold text-xl">Maison avec jardin</span>
+          </div>
+          <p class="text-white/80 text-sm">Un espace extérieur privatif pour se ressourcer</p>
+          <span class="inline-flex items-center gap-1 mt-3 text-[#dce0fb] text-sm font-semibold group-hover:gap-2 transition-all">
+            Voir les logements <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- Familles -->
+      <a href="https://travel.hostnfly.com/fr/rentals/search?amenity_mode=all&bedrooms_count=3&rentals_tag_mode=all" target="_blank"
+         class="group relative rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-shadow block">
+        <div class="h-56 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1679683171686-6242c0fde282?auto=format&fit=crop&w=800&q=80"
+               alt="Logements pour familles 3 chambres et plus" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#101923]/70 via-transparent to-transparent"></div>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-5">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-2xl">👨‍👩‍👧‍👦</span>
+            <span class="text-white font-bold text-xl">Parfait pour familles</span>
+          </div>
+          <p class="text-white/80 text-sm">3 chambres et plus pour des vacances en grand</p>
+          <span class="inline-flex items-center gap-1 mt-3 text-[#dce0fb] text-sm font-semibold group-hover:gap-2 transition-all">
+            Voir les logements <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- POURQUOI HOSTNFLY -->
+<section class="py-16 bg-white">
+  <div class="max-w-5xl mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-12 text-center">Pourquoi réserver avec HostnFly ?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="text-center p-8 rounded-2xl bg-[#f0f4ff]">
+        <div class="w-16 h-16 bg-[#014fff] rounded-2xl flex items-center justify-center mx-auto mb-5">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3 class="text-xl font-bold text-[#101923] mb-3">Meilleur prix garanti</h3>
+        <p class="text-gray-600 leading-relaxed">En réservant directement, vous bénéficiez du meilleur tarif disponible, sans frais cachés.</p>
+      </div>
+      <div class="text-center p-8 rounded-2xl bg-[#f0f4ff]">
+        <div class="w-16 h-16 bg-[#014fff] rounded-2xl flex items-center justify-center mx-auto mb-5">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <h3 class="text-xl font-bold text-[#101923] mb-3">Experts locaux 7j/7</h3>
+        <p class="text-gray-600 leading-relaxed">Nos équipes présentes sur le terrain vous accompagnent avant, pendant et après votre séjour.</p>
+      </div>
+      <div class="text-center p-8 rounded-2xl bg-[#f0f4ff]">
+        <div class="w-16 h-16 bg-[#014fff] rounded-2xl flex items-center justify-center mx-auto mb-5">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <h3 class="text-xl font-bold text-[#101923] mb-3">Logements vérifiés</h3>
+        <p class="text-gray-600 leading-relaxed">Chaque logement est sélectionné, photographié et inspecté par nos équipes. Note moyenne 4.88 ⭐</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCIERGERIES LOCALES -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-3 text-center">Nos équipes locales</h2>
+    <p class="text-gray-500 text-center mb-12 text-lg">Des experts du territoire, disponibles 7j/7 pour vous</p>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+      <!-- Chamonix -->
+      <a href="https://hostnfly.com/city/leisure?utm_location=Chamonix" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">CL</div>
+          <div>
+            <div class="font-bold text-[#101923] text-sm">🏔️ Chamonix</div>
+            <div class="text-xs text-[#014fff] font-medium">Caroline de Linière</div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500">de Combloux à Argentière</div>
+      </a>
+
+      <!-- Cannes · Antibes -->
+      <a href="https://hostnfly.com/city/leisure?utm_location=Cannes" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">LP</div>
+          <div>
+            <div class="font-bold text-[#101923] text-sm">☀️ Cannes · Antibes</div>
+            <div class="text-xs text-[#014fff] font-medium">Luca Peracchi</div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500">De Cannes à Antibes</div>
+      </a>
+
+      <!-- Serre-Chevalier -->
+      <a href="https://hostnfly.com/city/leisure?utm_location=Serre-Chevalier" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">LD</div>
+          <div>
+            <div class="font-bold text-[#101923] text-sm">⛷️ Serre-Chevalier</div>
+            <div class="text-xs text-[#014fff] font-medium">Laetitia Dutertre-Turfin</div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500">Autour de La Salle-les-Alpes</div>
+      </a>
+
+      <!-- Six-Fours -->
+      <a href="https://hostnfly.com/city/leisure?utm_location=Six-Fours-les-Plages" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">JB</div>
+          <div>
+            <div class="font-bold text-[#101923] text-sm">🏖️ Six-Fours · Bandol</div>
+            <div class="text-xs text-[#014fff] font-medium">Jonathan Bonnet</div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500">De Bandol à La Seyne-sur-Mer</div>
+      </a>
+
+      <!-- Megève -->
+      <a href="https://hostnfly.com/city/leisure?utm_location=Megève" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">TG</div>
+          <div>
+            <div class="font-bold text-[#101923] text-sm">🏔️ Megève</div>
+            <div class="text-xs text-[#014fff] font-medium">Thomas Gerphagnon</div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500">De Saint-Gervais à Praz-sur-Arly</div>
+      </a>
+
+      <!-- Saint-Raphaël · Fréjus -->
+      <a href="https://hostnfly.com/city/leisure?utm_location=Saint-Raphaël" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">EA</div>
+          <div>
+            <div class="font-bold text-[#101923] text-sm">⛵ Saint-Raphaël · Fréjus</div>
+            <div class="text-xs text-[#014fff] font-medium">Emilie Aragon</div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500">Autour de Saint-Raphaël</div>
+      </a>
+
+      <!-- Paris -->
+      <a href="https://hostnfly.com/city/urban?utm_location=Paris" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">AH</div>
+          <div>
+            <div class="font-bold text-[#101923] text-sm">🗼 Paris</div>
+            <div class="text-xs text-[#014fff] font-medium">Alexandre Hawie</div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500">Paris intramuros et petite couronne</div>
+      </a>
+
+      <!-- Toulouse -->
+      <a href="https://hostnfly.com/city/leisure?utm_location=Toulouse" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">JB</div>
+          <div>
+            <div class="font-bold text-[#101923] text-sm">🌹 Toulouse</div>
+            <div class="text-xs text-[#014fff] font-medium">Jonathan Bailly</div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500">Toulouse et sa petite couronne</div>
+      </a>
+
+      <!-- Gérardmer -->
+      <a href="https://hostnfly.com/city/leisure?utm_location=Gérardmer" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">YL</div>
+          <div>
+            <div class="font-bold text-[#101923] text-sm">🌲 Gérardmer</div>
+            <div class="text-xs text-[#014fff] font-medium">Yves Lapotre</div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500">Autour de Gérardmer</div>
+      </a>
+
+      <!-- Nice -->
+      <a href="https://hostnfly.com/city/leisure?utm_location=Nice" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">CB</div>
+          <div>
+            <div class="font-bold text-[#101923] text-sm">🌊 Nice</div>
+            <div class="text-xs text-[#014fff] font-medium">Clarisse Buchband</div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500">De Villeneuve-Loubet à Beaulieu-sur-Mer</div>
+      </a>
+
+      <!-- Deauville · Cabourg -->
+      <a href="https://hostnfly.com/city/leisure?utm_location=Deauville" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">AH</div>
+          <div>
+            <div class="font-bold text-[#101923] text-sm">🎭 Deauville · Cabourg</div>
+            <div class="text-xs text-[#014fff] font-medium">Abdelkader Hessini</div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500">De Ouistreham à Honfleur</div>
+      </a>
+
+      <!-- Saint-Tropez -->
+      <a href="https://hostnfly.com/city/leisure?utm_location=Saint-Tropez" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">VM</div>
+          <div>
+            <div class="font-bold text-[#101923] text-sm">✨ Saint-Tropez</div>
+            <div class="text-xs text-[#014fff] font-medium">Vincent Monget</div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500">Entre Cavalaire et Sainte-Maxime</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- AVIS VOYAGEURS -->
+<section class="py-16 bg-white">
+  <div class="max-w-5xl mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-3 text-center">Ce que disent nos voyageurs</h2>
+    <p class="text-gray-500 text-center mb-12 text-lg">Des milliers de voyageurs nous font confiance chaque année</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-gray-50 rounded-2xl p-6">
+        <div class="text-[#00B67A] mb-4 text-lg">★★★★★</div>
+        <p class="text-gray-700 italic mb-5 leading-relaxed">"Logement impeccable, équipe réactive et très professionnelle. Check-in parfait, le chalet était exactement comme sur les photos. On reviendra !"</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold">S</div>
+          <div><div class="font-semibold text-[#101923] text-sm">Sophie M.</div><div class="text-xs text-gray-500">Chamonix · Février 2025</div></div>
+        </div>
+      </div>
+      <div class="bg-gray-50 rounded-2xl p-6">
+        <div class="text-[#00B67A] mb-4 text-lg">★★★★★</div>
+        <p class="text-gray-700 italic mb-5 leading-relaxed">"Villa absolument magnifique face à la mer. Les équipes HostnFly ont été aux petits soins. Réservation fluide, communication parfaite. Je recommande."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold">T</div>
+          <div><div class="font-semibold text-[#101923] text-sm">Thomas B.</div><div class="text-xs text-gray-500">Saint-Tropez · Août 2025</div></div>
+        </div>
+      </div>
+      <div class="bg-gray-50 rounded-2xl p-6">
+        <div class="text-[#00B67A] mb-4 text-lg">★★★★★</div>
+        <p class="text-gray-700 italic mb-5 leading-relaxed">"Tout était parfait du début à la fin. L'appartement parisien dépassait nos attentes, et le support HostnFly a été disponible à toute heure. Merci !"</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold">C</div>
+          <div><div class="font-semibold text-[#101923] text-sm">Claire &amp; Pierre D.</div><div class="text-xs text-gray-500">Paris · Novembre 2025</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-16 bg-gray-50" aria-labelledby="faq-heading">
+  <div class="max-w-3xl mx-auto px-4">
+    <h2 id="faq-heading" class="text-3xl md:text-4xl font-bold text-[#101923] mb-12 text-center">Questions fréquentes</h2>
+    <div class="divide-y divide-gray-200 border-y border-gray-200" id="faq-list" itemscope itemtype="https://schema.org/FAQPage"></div>
+  </div>
+</section>
+
+<!-- CTA PROPRIETAIRES -->
+<section class="py-20 bg-[#101923]">
+  <div class="max-w-3xl mx-auto px-4 text-center">
+    <div class="text-5xl mb-6">🏡</div>
+    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Vous êtes propriétaire ?</h2>
+    <p class="text-gray-300 text-lg mb-8 leading-relaxed">Confiez votre logement à HostnFly et bénéficiez d'une gestion complète : accueil, ménage, linge de maison et optimisation des revenus. Rejoignez 2 000 propriétaires qui nous font confiance.</p>
+    <a href="https://www.hostnfly.com" target="_blank" class="inline-flex items-center gap-2 bg-[#014fff] text-white font-bold px-8 py-4 rounded-2xl text-lg hover:bg-[#0140cc] transition-colors">
+      <span>Estimer mes revenus</span>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+    </a>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-[#101923] border-t border-white/10 pt-12 pb-8">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+      <div class="col-span-2 md:col-span-1">
+        <div class="mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 673.17 134.68" height="28" style="width:auto">
+            <defs>
+              <style>.flc1{fill:none}.flc2{clip-path:url(#flcp1)}.flc3{fill:#dce0fb}.flc4{clip-path:url(#flcp2)}.flc5{fill:#014fff}.flc6{clip-path:url(#flcp3)}.flc7{fill:#ffffff}.flc8{clip-path:url(#flcp4)}</style>
+              <clipPath id="flcp1" transform="translate(3.95 3.95)"><path class="flc1" d="M28.7,5c-6.79,0-12.77,5-12.77,11.82A13.12,13.12,0,0,0,28.7,29.63H68.2a4.89,4.89,0,1,1,0,9.78l-55.9-.48a12.3,12.3,0,0,0,0,24.6L58.11,64a4.89,4.89,0,0,1,0,9.78H50.65a12.3,12.3,0,1,0,0,24.59h90.53L140.9,5Z"/></clipPath>
+              <clipPath id="flcp2" transform="translate(3.95 3.95)"><path class="flc1" d="M109.16,13.15a44.87,44.87,0,0,0,0,63.47L127.52,95a18.91,18.91,0,0,0,26.75,0l18.37-18.36a44.88,44.88,0,1,0-63.48-63.47"/></clipPath>
+              <clipPath id="flcp3" transform="translate(3.95 3.95)"><path class="flc1" d="M645.78,43.12l-14,38.71L617.7,43.12h-20l24.4,60.13-9.57,23.53h18.68l34-83.66ZM311.46,84.33a14.76,14.76,0,0,1-4.23-10.76,14.69,14.69,0,0,1,4.23-10.75,15.49,15.49,0,0,1,21.4,0,14.67,14.67,0,0,1,4.26,10.75,14.74,14.74,0,0,1-4.26,10.76,15.41,15.41,0,0,1-21.4,0M298.64,50.8a30.47,30.47,0,0,0-9.39,22.77,30.56,30.56,0,0,0,9.39,22.79q9.41,9.17,23.5,9.17t23.5-9.17A30.57,30.57,0,0,0,355,73.57a30.48,30.48,0,0,0-9.4-22.77q-9.4-9.13-23.5-9.14t-23.5,9.14m67.58-4q-6.56,5.13-6.56,14.12-.06,14.77,19.2,19.33,9.81,2.16,9.81,6.71a4.08,4.08,0,0,1-1.72,3.3,6.55,6.55,0,0,1-4.23,1.37,6.48,6.48,0,0,1-4.56-1.78,5.64,5.64,0,0,1-1.92-4.29H358.78a17.93,17.93,0,0,0,6.83,14.16q6.83,5.81,17,5.81t16.78-5.37q6.75-5.37,6.75-14.72a18.48,18.48,0,0,0-1.55-7.79,14.1,14.1,0,0,0-4.47-5.52,29.17,29.17,0,0,0-5.89-3.41,43.29,43.29,0,0,0-7-2.19q-10.15-2.4-10.16-6.83a3.72,3.72,0,0,1,1.49-2.89,5.45,5.45,0,0,1,3.65-1.26,5.56,5.56,0,0,1,4,1.55,5,5,0,0,1,1.6,3.71h17.46a17.14,17.14,0,0,0-6.57-13.6q-6.57-5.55-16.38-5.55-9.57,0-16.14,5.14m109.12,3V43.12H457.89v61h17.45V71a12,12,0,0,1,3.53-9A12.66,12.66,0,0,1,488,58.53a11.24,11.24,0,0,1,8.49,3.36,12.21,12.21,0,0,1,3.25,8.84v33.34H517.2V64.84q0-10.52-6.42-16.85t-16.93-6.33q-11.5,0-18.51,8.11M422,29V43.12H410.8V60.49H422v43.58h17.46V60.49H451.2V43.12H439.41v-18ZM264.81,21.58v34a33.72,33.72,0,0,0-15.56-3.79H231.71V21.58H213.15v82.49h18.56V70.2h17.54a15.64,15.64,0,0,1,15.56,14.43v19.44h18.51V21.58ZM576,104.07h17.46V21.58H576ZM524.43,21.58v82.49h18.45V86.61l0-3.5a12.48,12.48,0,0,1,.35-2,12.91,12.91,0,0,1,2-4.32,13.12,13.12,0,0,1,1.6-1.82,13.31,13.31,0,0,1,1.92-1.49,12.91,12.91,0,0,1,4.48-1.78l.3-.06.3,0,.3,0h.16l.15,0c.2,0,.41,0,.61,0l.31,0h.4l4.09,0,5.72-.08V54L559.93,54l-4.09,0H554.5c-.48,0-1,0-1.43.08l-.35,0-.36,0-.71.08-.71.09-.71.12a30.65,30.65,0,0,0-5.54,1.49c-.57.21-1.14.45-1.7.69V39h27.27V21.58Z"/></clipPath>
+              <clipPath id="flcp4" transform="translate(3.95 3.95)"><path class="flc1" d="M136.7,109.16a6.51,6.51,0,1,0,0,13h9a6.51,6.51,0,1,0,0-13Z"/></clipPath>
+            </defs>
+            <g><g class="flc2"><rect class="flc3" y="5.04" width="149.08" height="101.23"/></g><g class="flc4"><rect class="flc5" x="96.01" width="97.67" height="108.42"/></g><g class="flc6"><rect class="flc7" x="213.14" y="21.58" width="460.03" height="113.1"/></g><g class="flc8"><rect class="flc7" x="130.19" y="109.16" width="29.89" height="20.93"/></g></g>
+          </svg>
+        </div>
+        <p class="text-gray-400 text-sm leading-relaxed">Conciergerie Airbnb leader en France. 2 000 logements gérés par des experts locaux.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4">Destinations</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://travel.hostnfly.com/fr/destinations/paris" target="_blank" class="text-gray-400 hover:text-white transition-colors">Paris</a></li>
+          <li><a href="https://travel.hostnfly.com/fr/destinations/chamonix" target="_blank" class="text-gray-400 hover:text-white transition-colors">Chamonix</a></li>
+          <li><a href="https://travel.hostnfly.com/fr/destinations/cannes" target="_blank" class="text-gray-400 hover:text-white transition-colors">Cannes</a></li>
+          <li><a href="https://travel.hostnfly.com/fr/destinations/saint-tropez" target="_blank" class="text-gray-400 hover:text-white transition-colors">Saint-Tropez</a></li>
+          <li><a href="https://travel.hostnfly.com/fr/destinations/biarritz" target="_blank" class="text-gray-400 hover:text-white transition-colors">Biarritz</a></li>
+          <li><a href="https://travel.hostnfly.com/fr" target="_blank" class="text-[#dce0fb] hover:text-white transition-colors font-medium">Toutes →</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4">HostnFly</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://www.hostnfly.com" target="_blank" class="text-gray-400 hover:text-white transition-colors">À propos</a></li>
+          <li><a href="https://www.hostnfly.com" target="_blank" class="text-gray-400 hover:text-white transition-colors">Propriétaires</a></li>
+          <li><a href="https://fr.trustpilot.com/review/www.hostnfly.com" target="_blank" class="text-gray-400 hover:text-white transition-colors">Avis voyageurs</a></li>
+          <li><a href="https://www.hostnfly.com/blog" target="_blank" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4">Contact</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li>7j/7 de 8h à 22h</li>
+          <li><a href="mailto:contact@hostnfly.com" class="hover:text-white transition-colors">contact@hostnfly.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+      <span>© 2025 HostnFly · Tous droits réservés</span>
+      <div class="flex gap-4">
+        <a href="https://www.hostnfly.com/mentions-legales" target="_blank" class="hover:text-gray-300 transition-colors">Mentions légales</a>
+        <a href="https://www.hostnfly.com/politique-de-confidentialite" target="_blank" class="hover:text-gray-300 transition-colors">Confidentialité</a>
+        <a href="https://www.hostnfly.com/cgv" target="_blank" class="hover:text-gray-300 transition-colors">CGV</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- EMAIL POPUP -->
+<div id="email-popup" onclick="closePopupOnOverlay(event)">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+  <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+    <div class="bg-gradient-to-br from-[#014fff] to-[#0140cc] px-8 pt-8 pb-6 text-white">
+      <button onclick="closePopup()" class="absolute top-4 right-4 text-white/70 hover:text-white text-2xl leading-none font-light">×</button>
+      <div class="text-4xl mb-3">🎁</div>
+      <h3 class="text-2xl font-bold mb-2">Obtenez -5% sur votre séjour</h3>
+      <p class="text-white/80 text-sm">Laissez votre email, nous vous envoyons votre code promo exclusif.</p>
+    </div>
+    <div class="px-8 py-6">
+      <div id="popup-form">
+        <div class="flex gap-2 mb-3">
+          <input id="popup-email" type="email" placeholder="votre@email.com" class="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-[#014fff] focus:ring-2 focus:ring-[#dce0fb] transition-all"/>
+          <button onclick="submitPopup()" class="bg-[#014fff] text-white font-bold px-5 py-3 rounded-xl text-sm hover:bg-[#0140cc] transition-colors whitespace-nowrap">Recevoir mon code</button>
+        </div>
+        <button onclick="closePopup()" class="w-full text-center text-xs text-gray-400 hover:text-gray-600 py-1">Non merci</button>
+      </div>
+      <div id="popup-success" class="hidden text-center py-4">
+        <div class="text-4xl mb-3">✅</div>
+        <p class="text-gray-700">Merci ! Votre code <strong class="text-[#014fff]">BIENVENUE5</strong> vous a été envoyé.<br/><span class="text-sm text-gray-500">(-5% sur votre prochain séjour)</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const destinations = [
+  {name:'Chamonix',slug:'chamonix',region:'Haute-Savoie',cat:['ski'],rating:4.93,count:87,img:'1684670157250-acf10312770b',lat:45.9237,lng:6.8694,priority:true,tags:['⛷️ Ski','🏔️ Mont-Blanc']},
+  {name:'Cannes · Antibes',slug:'cannes',region:"Côte d'Azur",cat:['mer'],rating:4.90,count:118,img:'1734410308581-f6d5d5ed7286',lat:43.5528,lng:7.0174,priority:true,tags:['☀️ Soleil','✨ Luxe']},
+  {name:'Serre-Chevalier',slug:'serre-chevalier',region:'Hautes-Alpes',cat:['ski'],rating:4.84,count:33,img:'1551698618-1dfe5d97d256',lat:44.9227,lng:6.5540,priority:true,tags:['⛷️ Ski','🏔️ Alpes']},
+  {name:'Six-Fours-les-Plages',slug:'six-fours-les-plages',region:'Var',cat:['mer'],rating:4.83,count:44,img:'1566754047096-fb13141614b1',lat:43.0983,lng:5.8297,priority:true,tags:['🏖️ Mer','☀️ Var']},
+  {name:'Megève',slug:'megeve',region:'Haute-Savoie',cat:['ski'],rating:4.92,count:58,img:'1677932357016-72114e54be39',lat:45.8574,lng:6.6163,priority:true,tags:['⛷️ Ski','✨ Village']},
+  {name:'Saint-Raphaël',slug:'saint-raphael',region:'Var',cat:['mer'],rating:4.82,count:43,img:'1662895765589-9ca6130b5ed7',lat:43.4252,lng:6.7685,priority:true,tags:['🏖️ Mer','⚓ Port']},
+  {name:'Paris',slug:'paris',region:'Île-de-France',cat:['ville'],rating:4.88,count:412,img:'1502602898657-3e91760cbb34',lat:48.8566,lng:2.3522,priority:true,tags:['🗼 Culture','🍽️ Gastronomie']},
+  {name:'Toulouse',slug:'toulouse',region:'Occitanie',cat:['ville'],rating:4.83,count:97,img:'1506501139174-099022df5260',lat:43.6047,lng:1.4442,priority:true,tags:['🌹 Ville rose']},
+  {name:'Gérardmer',slug:'gerardmer',region:'Vosges',cat:['ski'],rating:4.78,count:24,img:'1507371341162-763b5e419408',lat:48.0732,lng:6.8779,priority:true,tags:['🌲 Nature','🏊 Lac']},
+  {name:'Nice',slug:'nice',region:"Côte d'Azur",cat:['mer'],rating:4.91,count:143,img:'1552506667-336694bf67dc',lat:43.7102,lng:7.2620,priority:true,tags:['☀️ Soleil','🏖️ Mer']},
+  {name:'Fréjus',slug:'frejus',region:'Var',cat:['mer'],rating:4.81,count:38,img:'1547036967-23d11aacaee0',lat:43.4328,lng:6.7359,priority:true,tags:['🏖️ Mer','🏛️ Histoire']},
+  {name:'Deauville · Cabourg',slug:'deauville',region:'Normandie',cat:['mer'],rating:4.83,count:39,img:'1698402532179-990fb9832878',lat:49.3597,lng:0.0722,priority:true,tags:['🏖️ Plage','🎭 Chic']},
+  {name:'Saint-Tropez',slug:'saint-tropez',region:'Var',cat:['mer'],rating:4.94,count:67,img:'1529528781357-09cdba0d395b',lat:43.2727,lng:6.6407,priority:true,tags:['✨ Luxe','🌊 Mer']},
+  {name:'Arcachon',slug:'arcachon',region:'Gironde',cat:['mer'],rating:4.87,count:82,img:'1579452928635-eed0a612fde2',lat:44.6606,lng:-1.1682,priority:true,tags:['🏖️ Dune','🌊 Bassin']},
+  {name:'Sainte-Maxime',slug:'sainte-maxime',region:'Var',cat:['mer'],rating:4.85,count:51,img:'1703075858443-d8dbf98ad0ee',lat:43.3094,lng:6.6344,priority:true,tags:['🏖️ Mer','☀️ Var']},
+  {name:'Ajaccio',slug:'ajaccio',region:'Corse-du-Sud',cat:['mer'],rating:4.90,count:52,img:'1697563838335-78749548bb11',lat:41.9192,lng:8.7386,priority:false,tags:['🌊 Corse','☀️ Soleil']},
+  {name:'Moliets',slug:'moliets-et-maa',region:'Landes',cat:['mer'],rating:4.79,count:27,img:'1565616446560-f7be1349b324',lat:43.8500,lng:-1.3600,priority:false,tags:['🏄 Surf','🌲 Landes']},
+  {name:"Val d'Isère",slug:'val-d-isere',region:'Savoie',cat:['ski'],rating:4.91,count:72,img:'1519049069275-dea996e1a314',lat:45.4478,lng:6.9803,priority:false,tags:['⛷️ Ski']},
+  {name:'Courchevel',slug:'courchevel',region:'Savoie',cat:['ski'],rating:4.94,count:63,img:'1574202809879-4f9a13792785',lat:45.4149,lng:6.6338,priority:false,tags:['⛷️ Ski','✨ Luxe']},
+  {name:'Méribel',slug:'meribel',region:'Savoie',cat:['ski'],rating:4.89,count:54,img:'1582491795316-0782a861c529',lat:45.3969,lng:6.5672,priority:false,tags:['⛷️ Ski']},
+  {name:'La Clusaz',slug:'la-clusaz',region:'Haute-Savoie',cat:['ski'],rating:4.85,count:41,img:'1490037716392-9e7783b53138',lat:45.9046,lng:6.4239,priority:false,tags:['⛷️ Ski']},
+  {name:'La Plagne',slug:'la-plagne',region:'Savoie',cat:['ski'],rating:4.87,count:45,img:'1525498128493-380d96fd4544',lat:45.5074,lng:6.6749,priority:false,tags:['⛷️ Ski']},
+  {name:'Les Arcs',slug:'les-arcs',region:'Savoie',cat:['ski'],rating:4.86,count:39,img:'1544551763-46a013bb70d5',lat:45.5736,lng:6.8224,priority:false,tags:['⛷️ Ski']},
+  {name:'Annecy',slug:'annecy',region:'Haute-Savoie',cat:['ski'],rating:4.88,count:76,img:'1562774053-701939374585',lat:45.8992,lng:6.1294,priority:false,tags:['🏔️ Montagne','🏊 Lac']},
+  {name:'Le Grand Bornand',slug:'le-grand-bornand',region:'Haute-Savoie',cat:['ski'],rating:4.81,count:29,img:'1551632811-561732d1e306',lat:45.9479,lng:6.4736,priority:false,tags:['⛷️ Ski']},
+  {name:'Superdévoluy',slug:'superdeVoluy',region:'Hautes-Alpes',cat:['ski'],rating:4.76,count:18,img:'1741633546765-1783b5e5cec3',lat:44.6830,lng:5.9253,priority:false,tags:['⛷️ Ski']},
+  {name:'Biarritz',slug:'biarritz',region:'Pays Basque',cat:['mer'],rating:4.89,count:94,img:'1562772526-09d29d7de94e',lat:43.4832,lng:-1.5586,priority:false,tags:['🏄 Surf','🌊 Atlantique']},
+  {name:"Île de Ré",slug:'ile-de-re',region:'Charente-Maritime',cat:['mer'],rating:4.92,count:71,img:'1596394516093-501ba68a0ba6',lat:46.2010,lng:-1.3861,priority:false,tags:['🏝️ Île','🚲 Vélo']},
+  {name:'Saint-Malo',slug:'saint-malo',region:'Bretagne',cat:['mer'],rating:4.86,count:56,img:'1574710073-36851a9f56ce',lat:48.6493,lng:-2.0257,priority:false,tags:['🏰 Remparts','⚓ Bretagne']},
+  {name:'La Rochelle',slug:'la-rochelle',region:'Charente-Maritime',cat:['mer'],rating:4.84,count:48,img:'1530789253388-582c481c54b0',lat:46.1603,lng:-1.1511,priority:false,tags:['⚓ Port','🏖️ Mer']},
+  {name:'Porto-Vecchio',slug:'porto-vecchio',region:'Corse-du-Sud',cat:['mer'],rating:4.93,count:48,img:'1595163153849-cd95e5ca89d0',lat:41.5903,lng:9.2795,priority:false,tags:['🌊 Mer turquoise','🏖️ Plage']},
+  {name:'Sanary-sur-Mer',slug:'sanary',region:'Var',cat:['mer'],rating:4.85,count:44,img:'1578158934473-85a4c11687ba',lat:43.1192,lng:5.8007,priority:false,tags:['🏖️ Mer','🌿 Provence']},
+  {name:'Vannes',slug:'vannes',region:'Bretagne',cat:['mer'],rating:4.81,count:32,img:'1574789083937-8be8a1f73f04',lat:47.6581,lng:-2.7601,priority:false,tags:['⚓ Bretagne']},
+  {name:'La Baule',slug:'la-baule',region:'Loire-Atlantique',cat:['mer'],rating:4.82,count:37,img:'1469474968028-56623f02e42e',lat:47.2893,lng:-2.3966,priority:false,tags:['🏖️ Plage']},
+  {name:'Hyères',slug:'hyeres',region:'Var',cat:['mer'],rating:4.83,count:41,img:'1614252743527-1b0508f58d87',lat:43.1201,lng:6.1282,priority:false,tags:['🏝️ Île','🏖️ Mer']},
+  {name:'Le Touquet',slug:'le-touquet',region:'Hauts-de-France',cat:['mer'],rating:4.81,count:31,img:'1699035426421-d11fe7d848e3',lat:50.5239,lng:1.5886,priority:false,tags:['🏖️ Plage','🎭 Chic']},
+  {name:"Les Sables-d'Olonne",slug:'les-sables-d-olonne',region:'Vendée',cat:['mer'],rating:4.80,count:35,img:'1637008563695-a4061ee57a00',lat:46.4974,lng:-1.7833,priority:false,tags:['🏖️ Vendée']},
+  {name:'Lyon',slug:'lyon',region:'Auvergne-Rhône-Alpes',cat:['ville'],rating:4.85,count:156,img:'1524396309943-e03f5249f002',lat:45.7640,lng:4.8357,priority:false,tags:['🍽️ Gastronomie']},
+  {name:'Bordeaux',slug:'bordeaux',region:'Nouvelle-Aquitaine',cat:['ville'],rating:4.86,count:128,img:'1543051932-6ef9fecce9b6',lat:44.8378,lng:-0.5792,priority:false,tags:['🍷 Vin','🏛️ Patrimoine']},
+  {name:'Marseille',slug:'marseille',region:'Provence',cat:['ville'],rating:4.82,count:143,img:'1561731216-c3a4d99437d5',lat:43.2965,lng:5.3698,priority:false,tags:['⚓ Port','🏖️ Mer']},
+  {name:'Strasbourg',slug:'strasbourg',region:'Alsace',cat:['ville'],rating:4.87,count:84,img:'1566073771259-59b0ab14c5d7',lat:48.5734,lng:7.7521,priority:false,tags:['🥨 Alsace']},
+  {name:'Nantes',slug:'nantes',region:'Pays de la Loire',cat:['ville'],rating:4.84,count:91,img:'1572120360610-d4957b72667b',lat:47.2184,lng:-1.5536,priority:false,tags:['🎨 Culture']},
+  {name:'Aix-en-Provence',slug:'aix-en-provence',region:'Provence',cat:['ville'],rating:4.85,count:73,img:'1562408590-e32931084e23',lat:43.5297,lng:5.4474,priority:false,tags:['🌿 Provence']},
+  {name:'Montpellier',slug:'montpellier',region:'Occitanie',cat:['ville'],rating:4.83,count:87,img:'1556742049-0cfed4f6a45d',lat:43.6107,lng:3.8767,priority:false,tags:['☀️ Sud']},
+  {name:'Avignon',slug:'avignon',region:'Provence',cat:['ville'],rating:4.82,count:61,img:'1574707012767-de26d7cdb3f6',lat:43.9493,lng:4.8055,priority:false,tags:['🌿 Provence']},
+  {name:'Narbonne Plage',slug:'narbonne',region:'Aude',cat:['mer'],rating:4.76,count:28,img:'1667395959605-0025d5845885',lat:43.1839,lng:3.0038,priority:false,tags:['🏖️ Méditerranée']},
+  {name:'Béziers',slug:'beziers',region:'Hérault',cat:['ville'],rating:4.76,count:28,img:'1739630833697-e529b0b3f20a',lat:43.3476,lng:3.2201,priority:false,tags:['☀️ Sud']},
+  {name:'Caen',slug:'caen',region:'Normandie',cat:['ville'],rating:4.78,count:35,img:'1636928472728-8e0e423218b8',lat:49.1829,lng:-0.3707,priority:false,tags:['🏛️ Histoire']},
+  {name:'Toulon',slug:'toulon',region:'Var',cat:['mer'],rating:4.78,count:38,img:'1571003625-6d5bfc3dcd3a',lat:43.1242,lng:5.9280,priority:false,tags:['⚓ Port']},
+  {name:'Morzine',slug:'morzine',region:'Haute-Savoie',cat:['ski'],rating:4.82,count:31,img:'1706519418602-19cee57ba6c5',lat:46.1767,lng:6.7100,priority:false,tags:['⛷️ Ski']},
+  {name:'Tignes',slug:'tignes',region:'Savoie',cat:['ski'],rating:4.88,count:42,img:'1649780428890-169362bd70f4',lat:45.4697,lng:6.9075,priority:false,tags:['⛷️ Ski']},
+  {name:'Embrun',slug:'embrun',region:'Hautes-Alpes',cat:['ski'],rating:4.78,count:21,img:'1666286350149-0393b562468d',lat:44.5634,lng:6.4968,priority:false,tags:['🏔️ Montagne']},
+];
+
+const coups_de_coeur = [
+  {title:"Chalet d'exception face aux pistes",location:"Megève, Haute-Savoie",img:'1513622470522-26c3c8a854bc',price:620,bedrooms:5,guests:10,rating:4.98,reviews:47,tags:['⛷️ Ski-in ski-out','🧖 Sauna','🏔️ Vue Mont-Blanc'],slug:'322750-chalet-exception-face-aux-pistes-a-megeve'},
+  {title:"Villa avec piscine à débordement",location:"Saint-Tropez, Var",img:'1582268611958-ebfd161ef9cf',price:980,bedrooms:4,guests:8,rating:4.97,reviews:62,tags:['🏊 Piscine privée','🌊 Vue mer','✨ Luxe'],slug:'322751-villa-piscine-a-debordement-a-saint-tropez'},
+  {title:"Duplex avec terrasse vue Tour Eiffel",location:"Paris 7e, Île-de-France",img:'1551882547-ff40c63fe5fa',price:540,bedrooms:3,guests:6,rating:5.0,reviews:38,tags:['🗼 Vue Tour Eiffel','🛋️ Design','📍 Champs-Élysées 10min'],slug:'322752-duplex-terrasse-vue-eiffel-a-paris'},
+  {title:"Villa pieds dans l'eau en Corse",location:"Porto-Vecchio, Corse",img:'1595163153849-cd95e5ca89d0',price:760,bedrooms:4,guests:8,rating:4.99,reviews:29,tags:['🌊 Accès plage privée','🏊 Piscine','🌿 Nature'],slug:'322753-villa-pieds-eau-en-corse-a-porto-vecchio'},
+];
+
+const CITY_ZONE = {
+  'chamonix':'chamonix','chamonix-mont-blanc':'chamonix','les houches':'chamonix','argentiere':'chamonix','argentiere':'chamonix','saint-gervais-les-bains':'chamonix','saint-gervais':'chamonix','combloux':'chamonix',
+  'cannes':'cannes','antibes':'cannes','juan-les-pins':'cannes','juan les pins':'cannes','le cannet':'cannes','golfe-juan':'cannes','golfe juan':'cannes','mandelieu':'cannes','mandelieu-la-napoule':'cannes','mougins':'cannes','grasse':'cannes','valbonne':'cannes','biot':'cannes','villeneuve-loubet':'cannes','cagnes-sur-mer':'cannes','vallauris':'cannes',
+  'serre chevalier':'serre-chevalier','serre-chevalier':'serre-chevalier','la salle-les-alpes':'serre-chevalier','saint-chaffrey':'serre-chevalier','saint chaffrey':'serre-chevalier','le monetier-les-bains':'serre-chevalier','briancon':'serre-chevalier','briancon':'serre-chevalier',
+  'six-fours-les-plages':'six-fours-les-plages','six fours':'six-fours-les-plages','six fours les plages':'six-fours-les-plages','saint-mandrier-sur-mer':'six-fours-les-plages',
+  'megeve':'megeve','demi-quartier':'megeve',
+  'saint-raphael':'saint-raphael','saint raphael':'saint-raphael','saint aygulf':'saint-raphael','saint-aygulf':'saint-raphael','agay':'saint-raphael','antheor':'saint-raphael','roquebrune-sur-argens':'saint-raphael','les issambres':'saint-raphael','issambres':'saint-raphael','vidauban':'saint-raphael','fayence':'saint-raphael',
+  'paris':'paris','boulogne-billancourt':'paris','pantin':'paris','courbevoie':'paris','clichy':'paris','vincennes':'paris','issy-les-moulineaux':'paris','levallois-perret':'paris','levallois':'paris','neuilly-sur-seine':'paris','neuilly sur seine':'paris','montreuil':'paris','saint-ouen':'paris','saint ouen':'paris','montrouge':'paris','puteaux':'paris','ivry-sur-seine':'paris','malakoff':'paris','vanves':'paris','suresnes':'paris',
+  'toulouse':'toulouse','blagnac':'toulouse',
+  'gerardmer':'gerardmer','xonrupt-longemer':'gerardmer','la bresse':'gerardmer',
+  'nice':'nice','vence':'nice','saint-jean-cap-ferrat':'nice',
+  'frejus':'frejus','frejus plage':'frejus',
+  'deauville':'deauville','cabourg':'deauville','dives sur mer':'deauville','dives-sur-mer':'deauville','houlgate':'deauville','trouville-sur-mer':'deauville','tourgeville':'deauville',
+  'saint-tropez':'saint-tropez','saint tropez':'saint-tropez','port-grimaud':'saint-tropez','grimaud':'saint-tropez','cogolin':'saint-tropez','gassin':'saint-tropez','la croix-valmer':'saint-tropez','bormes-les-mimosas':'saint-tropez','le lavandou':'saint-tropez','cavalaire-sur-mer':'saint-tropez',
+  'arcachon':'arcachon','la teste-de-buch':'arcachon','pyla-sur-mer':'arcachon','lege-cap-ferret':'arcachon','lanton':'arcachon','gujan-mestras':'arcachon','ares':'arcachon','le teich':'arcachon','andernos-les-bains':'arcachon','andernos':'arcachon',
+  'sainte-maxime':'sainte-maxime','sainte maxime':'sainte-maxime',
+  'ajaccio':'ajaccio','grosseto-prugna':'ajaccio','pietrosella':'ajaccio',
+  'moliets':'moliets-et-maa','moliets-et-maa':'moliets-et-maa','moliets et maa':'moliets-et-maa','soustons':'moliets-et-maa','capbreton':'moliets-et-maa','seignosse':'moliets-et-maa',
+  "val-d-isere":'val-d-isere',"val d isere":'val-d-isere',
+  'courchevel':'courchevel',
+  'meribel':'meribel','les allues':'meribel','brides-les-bains':'meribel',
+  'la plagne':'la-plagne','macot-la-plagne':'la-plagne','aime':'la-plagne','aime-la-plagne':'la-plagne',
+  'les arcs':'les-arcs','bourg saint maurice':'les-arcs','bourg-saint-maurice':'les-arcs',
+  'tignes':'tignes',
+  'la clusaz':'la-clusaz','manigod':'la-clusaz',
+  'annecy':'annecy','veyrier-du-lac':'annecy','doussard':'annecy','saint-jorioz':'annecy',
+  'morzine':'morzine','chatel':'morzine',
+  'biarritz':'biarritz','anglet':'biarritz','bidart':'biarritz','bayonne':'biarritz','saint-jean-de-luz':'biarritz','ciboure':'biarritz','guethary':'biarritz',
+  'la flotte':'ile-de-re','le bois-plage-en-re':'ile-de-re','les portes-en-re':'ile-de-re','sainte-marie-de-re':'ile-de-re','rivedoux-plage':'ile-de-re',
+  'la rochelle':'la-rochelle','royan':'la-rochelle',
+  'saint-malo':'saint-malo','dinard':'saint-malo','cancale':'saint-malo','saint-lunaire':'saint-malo',
+  'le touquet-paris-plage':'le-touquet','le touquet':'le-touquet',
+  'vannes':'vannes','auray':'vannes','carnac':'vannes',
+  'porto-vecchio':'porto-vecchio','porto vecchio':'porto-vecchio','lecci':'porto-vecchio',
+  'lyon':'lyon','villeurbanne':'lyon',
+  'bordeaux':'bordeaux','pessac':'bordeaux','merignac':'bordeaux',
+  'nantes':'nantes','la baule':'la-baule','pornichet':'la-baule','guerande':'la-baule','le croisic':'la-baule',
+  'montpellier':'montpellier','palavas-les-flots':'montpellier','carnon':'montpellier',
+  'marseille':'marseille','cassis':'marseille','la ciotat':'marseille',
+  'strasbourg':'strasbourg',
+  'avignon':'avignon','orange':'avignon','carpentras':'avignon',
+  'toulon':'toulon','la seyne-sur-mer':'toulon',
+  'sanary':'sanary','sanary-sur-mer':'sanary','bandol':'sanary',
+  'hyeres':'hyeres','carqueiranne':'hyeres',
+  'narbonne':'narbonne','gruissan':'narbonne',
+  'beziers':'beziers','agde':'beziers','sete':'beziers',
+};
+
+const FAQ_DATA = [
+  {q:"Comment fonctionne la réservation directe ?",a:"En réservant sur ce site, vous êtes directement redirigé vers notre moteur de réservation partenaire. Aucun intermédiaire supplémentaire n'est impliqué : vous traitez directement avec HostnFly."},
+  {q:"Bénéficierai-je du meilleur prix ?",a:"Oui. Nos tarifs affichés ici sont nos tarifs officiels. Nous nous engageons à vous offrir le même prix ou un meilleur prix que sur les autres plateformes."},
+  {q:"Comment se passe le check-in ?",a:"Notre équipe locale vous contacte quelques jours avant votre arrivée pour vous communiquer toutes les informations pratiques : code d'accès, localisation des clés, numéro d'urgence. Nous assurons également des check-ins en personne sur demande."},
+  {q:"Quelle est la politique d'annulation ?",a:"Nos conditions d'annulation varient selon le logement et la période. Elles sont indiquées clairement avant toute confirmation de réservation. Nous proposons des options flexibles et non-remboursables selon vos préférences."},
+  {q:"Puis-je contacter un expert local ?",a:"Absolument. Chaque destination est gérée par une équipe locale joignable 7j/7. Vous aurez accès à un numéro direct dès la confirmation de votre réservation."},
+  {q:"Les logements sont-ils vérifiés ?",a:"Oui. Chaque logement est inspecté par nos équipes avant d'être mis en ligne. Nous effectuons des visites régulières et traitons tous les retours voyageurs pour maintenir un niveau de qualité constant."},
+];
+
+// ===== STATE =====
+const guests = {adults:1, children:0, babies:0};
+let checkin = null, checkout = null;
+let selectedDestSlug = null;
+let calField = 'checkin';
+let calViewYear, calViewMonth;
+let activeCatFilter = 'all';
+let showAllDest = false;
+let mapVisibleSlugs = null;
+let leafletMap = null;
+
+// ===== UTILS =====
+function imgUrl(id){return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=600&q=80`}
+function normalize(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim()}
+function fmtDate(d){if(!d)return '';const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${dd}`}
+function fmtDateFr(d){if(!d)return '';const months=['jan.','fév.','mars','avr.','mai','juin','juil.','août','sep.','oct.','nov.','déc.'];return `${d.getDate()} ${months[d.getMonth()]}`}
+function guestTotal(){return guests.adults + guests.children}
+function smilyDestUrl(slug,params={}){
+  let url=`https://travel.hostnfly.com/fr/destinations/${slug}`;
+  const p=[];
+  if(params.adults) p.push(`adults=${params.adults}`);
+  if(params.checkin) p.push(`checkin=${params.checkin}`);
+  if(params.checkout) p.push(`checkout=${params.checkout}`);
+  if(p.length) url+='?'+p.join('&');
+  return url;
+}
+
+// ===== NAVBAR SCROLL =====
+window.addEventListener('scroll',()=>{
+  const nb=document.getElementById('navbar');
+  if(window.scrollY>80){nb.classList.add('scrolled','shadow-md');}
+  else{nb.classList.remove('scrolled','shadow-md');}
+  if(document.getElementById('cal-wrap').classList.contains('open')) positionCal();
+  if(document.getElementById('dest-drop').classList.contains('open')) positionDrop();
+  if(!document.getElementById('guest-picker').classList.contains('hidden')) positionGuestPicker();
+});
+window.addEventListener('resize',()=>{
+  if(document.getElementById('cal-wrap').classList.contains('open')) positionCal();
+  if(document.getElementById('dest-drop').classList.contains('open')) positionDrop();
+  if(!document.getElementById('guest-picker').classList.contains('hidden')) positionGuestPicker();
+});
+
+// ===== GUEST PICKER =====
+function positionGuestPicker(){
+  const anchor=document.getElementById('sf-guests');
+  const picker=document.getElementById('guest-picker');
+  const rect=anchor.getBoundingClientRect();
+  picker.style.top=(rect.bottom+8)+'px';
+  const right=window.innerWidth-rect.right;
+  picker.style.right=Math.max(8,right)+'px';
+  picker.style.left='auto';
+}
+
+function toggleGuestPicker(e){
+  e.stopPropagation();
+  const p=document.getElementById('guest-picker');
+  const isHidden=p.classList.contains('hidden');
+  p.classList.toggle('hidden');
+  document.getElementById('sf-guests').classList.toggle('sf-active');
+  if(isHidden) positionGuestPicker();
+}
+function adjustGuest(cat,delta){
+  const limits={adults:[1,16],children:[0,10],babies:[0,5]};
+  const [mn,mx]=limits[cat];
+  guests[cat]=Math.min(mx,Math.max(mn,guests[cat]+delta));
+  document.getElementById(cat+'-count').textContent=guests[cat];
+  updateGuestsDisplay();
+}
+function updateGuestsDisplay(){
+  const parts=[];
+  if(guests.adults) parts.push(guests.adults===1?'1 adulte':`${guests.adults} adultes`);
+  if(guests.children) parts.push(guests.children===1?'1 enfant':`${guests.children} enfants`);
+  if(guests.babies) parts.push(guests.babies===1?'1 bébé':`${guests.babies} bébés`);
+  const el=document.getElementById('guests-display');
+  if(parts.length){el.textContent=parts.join(' · ');el.classList.remove('text-gray-400');el.classList.add('text-gray-800');}
+  else{el.textContent='Ajouter des voyageurs';el.classList.add('text-gray-400');el.classList.remove('text-gray-800');}
+}
+
+// ===== CALENDAR =====
+let _calLock=false;
+function positionCal(){
+  const wrap=document.getElementById('cal-wrap');
+  const search=document.getElementById('main-search');
+  const rect=search.getBoundingClientRect();
+  wrap.style.top=(rect.bottom+8)+'px';
+  // Align left but keep within viewport
+  const wrapW=wrap.offsetWidth||600;
+  let left=rect.left;
+  if(left+wrapW>window.innerWidth-16) left=Math.max(8,window.innerWidth-wrapW-16);
+  wrap.style.left=left+'px';
+}
+
+function openCal(field){
+  calField=field;
+  const now=new Date();
+  if(field==='checkin'){
+    calViewYear=checkin?checkin.getFullYear():now.getFullYear();
+    calViewMonth=checkin?checkin.getMonth():now.getMonth();
+  } else {
+    const base=checkout||checkin||now;
+    calViewYear=base.getFullYear();
+    calViewMonth=base.getMonth();
+  }
+  renderCal();
+  const wrap=document.getElementById('cal-wrap');
+  wrap.classList.add('open');
+  positionCal();
+  document.getElementById('sf-'+field).classList.add('sf-active');
+  const other=field==='checkin'?'checkout':'checkin';
+  document.getElementById('sf-'+other).classList.remove('sf-active');
+}
+
+function closeCal(){
+  document.getElementById('cal-wrap').classList.remove('open');
+  document.getElementById('sf-checkin').classList.remove('sf-active');
+  document.getElementById('sf-checkout').classList.remove('sf-active');
+}
+
+function renderCal(){
+  renderMonth('cal-month-1',calViewYear,calViewMonth);
+  let m2=calViewMonth+1,y2=calViewYear;
+  if(m2>11){m2=0;y2++;}
+  renderMonth('cal-month-2',y2,m2);
+}
+
+function renderMonth(containerId,year,month){
+  const months=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const days=['Lu','Ma','Me','Je','Ve','Sa','Di'];
+  const today=new Date();today.setHours(0,0,0,0);
+  const firstDay=new Date(year,month,1);
+  const lastDay=new Date(year,month+1,0);
+  let startDow=firstDay.getDay();
+  startDow=startDow===0?6:startDow-1;
+
+  let html=`<div style="min-width:252px">`;
+  html+=`<div class="flex items-center justify-between mb-4">`;
+  if(containerId==='cal-month-1'){
+    html+=`<button onclick="calPrev()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-600 font-bold">‹</button>`;
+  } else {
+    html+=`<div class="w-8"></div>`;
+  }
+  html+=`<div class="font-semibold text-gray-800">${months[month]} ${year}</div>`;
+  if(containerId==='cal-month-2'){
+    html+=`<button onclick="calNext()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-600 font-bold">›</button>`;
+  } else {
+    html+=`<div class="w-8"></div>`;
+  }
+  html+=`</div>`;
+  html+=`<div class="cal-month-grid mb-1">`;
+  days.forEach(d=>{html+=`<div class="text-xs text-gray-400 text-center font-medium">${d}</div>`;});
+  html+=`</div><div class="cal-month-grid">`;
+  for(let i=0;i<startDow;i++) html+=`<div class="cal-day cal-empty"></div>`;
+  for(let d=1;d<=lastDay.getDate();d++){
+    const date=new Date(year,month,d);
+    const isPast=date<today;
+    let cls='cal-day';
+    if(isPast) cls+=' cal-past';
+    const isCheckin=checkin&&date.getTime()===checkin.getTime();
+    const isCheckout=checkout&&date.getTime()===checkout.getTime();
+    const inRange=checkin&&checkout&&date>checkin&&date<checkout;
+    if(isCheckin&&isCheckout) cls+=' cal-selected';
+    else if(isCheckin) cls+=' cal-range-start';
+    else if(isCheckout) cls+=' cal-range-end';
+    else if(inRange) cls+=' cal-in-range';
+    const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    html+=`<div class="${cls}" ${isPast?'':'onclick="pickDay(\''+ds+'\')"'}>${d}</div>`;
+  }
+  html+=`</div></div>`;
+  document.getElementById(containerId).innerHTML=html;
+}
+
+function calPrev(){calViewMonth--;if(calViewMonth<0){calViewMonth=11;calViewYear--;}renderCal();}
+function calNext(){calViewMonth++;if(calViewMonth>11){calViewMonth=0;calViewYear++;}renderCal();}
+
+function pickDay(ds){
+  _calLock=true;
+  const d=new Date(ds+'T12:00:00');
+  if(calField==='checkin'){
+    checkin=d;
+    if(checkout&&checkout<=checkin) checkout=null;
+    const cdEl=document.getElementById('checkin-display');
+    cdEl.textContent=fmtDateFr(checkin);
+    cdEl.classList.remove('text-gray-400');cdEl.classList.add('text-gray-800');
+    // Switch to checkout without closing
+    calField='checkout';
+    document.getElementById('sf-checkin').classList.remove('sf-active');
+    document.getElementById('sf-checkout').classList.add('sf-active');
+    renderCal();
+  } else {
+    if(checkin&&d<=checkin){
+      checkin=d;
+      const cdEl=document.getElementById('checkin-display');
+      cdEl.textContent=fmtDateFr(checkin);
+      cdEl.classList.remove('text-gray-400');cdEl.classList.add('text-gray-800');
+    } else {
+      checkout=d;
+      const coEl=document.getElementById('checkout-display');
+      coEl.textContent=fmtDateFr(checkout);
+      coEl.classList.remove('text-gray-400');coEl.classList.add('text-gray-800');
+      setTimeout(()=>{closeCal();},300);
+    }
+    renderCal();
+  }
+  requestAnimationFrame(()=>{ _calLock=false; });
+}
+
+// ===== CLICK OUTSIDE =====
+document.addEventListener('click',e=>{
+  if(_calLock) return;
+  const inSearch=e.target.closest('#main-search');
+  const inCal=e.target.closest('#cal-wrap');
+  const inDrop=e.target.closest('#dest-drop');
+  if(!inSearch&&!inCal&&!inDrop){
+    closeCal();
+    hideDrop();
+    document.getElementById('guest-picker').classList.add('hidden');
+    document.getElementById('sf-guests').classList.remove('sf-active');
+  }
+});
+
+// ===== AUTOCOMPLETE =====
+function positionDrop(){
+  const anchor=document.getElementById('sf-dest');
+  const drop=document.getElementById('dest-drop');
+  const rect=anchor.getBoundingClientRect();
+  drop.style.top=(rect.bottom+8)+'px';
+  const left=Math.min(rect.left, window.innerWidth-344);
+  drop.style.left=Math.max(8,left)+'px';
+}
+
+function openDestDrop(){
+  document.getElementById('sf-dest').classList.add('sf-active');
+  const v=document.getElementById('dest-input').value;
+  if(v.length>0) renderDrop(v);
+}
+function hideDrop(){
+  document.getElementById('dest-drop').classList.remove('open');
+  document.getElementById('sf-dest').classList.remove('sf-active');
+}
+
+function onDestInput(v){
+  selectedDestSlug=null;
+  if(v.length<1){hideDrop();return;}
+  renderDrop(v);
+}
+
+function renderDrop(v){
+  const n=normalize(v);
+  let results=[];
+
+  // 1. City zone mapping
+  const zoneSlug=CITY_ZONE[n];
+  if(zoneSlug){
+    const d=destinations.find(x=>x.slug===zoneSlug);
+    if(d&&!results.find(r=>r.slug===d.slug)) results.push(d);
+  }
+
+  // 2. Keyword category
+  if(/ski|montagne|alpes|neige|station/.test(n)){
+    destinations.filter(d=>d.cat.includes('ski')).forEach(d=>{if(!results.find(r=>r.slug===d.slug))results.push(d);});
+  }
+  if(/mer|plage|cote|ocean|littoral|bord|corse/.test(n)){
+    destinations.filter(d=>d.cat.includes('mer')).forEach(d=>{if(!results.find(r=>r.slug===d.slug))results.push(d);});
+  }
+  if(/ville|city|urban/.test(n)){
+    destinations.filter(d=>d.cat.includes('ville')).forEach(d=>{if(!results.find(r=>r.slug===d.slug))results.push(d);});
+  }
+
+  // 3. Name/region match
+  destinations.forEach(d=>{
+    if((normalize(d.name).includes(n)||normalize(d.region).includes(n))&&!results.find(r=>r.slug===d.slug)){
+      results.push(d);
+    }
+  });
+
+  results=results.slice(0,8);
+
+  const drop=document.getElementById('dest-drop');
+  if(results.length===0){drop.classList.remove('open');return;}
+  drop.innerHTML=results.map(d=>`
+    <div class="dest-item" onclick="selectDest('${d.slug}','${d.name.replace(/'/g,"\\'")}')">
+      <img src="${imgUrl(d.img)}" alt="${d.name}" loading="lazy"/>
+      <div class="flex-1 min-w-0">
+        <div class="font-semibold text-gray-800 text-sm truncate">${d.name}</div>
+        <div class="text-xs text-gray-500">${d.region} · ${d.count} logements · ⭐${d.rating}</div>
+      </div>
+    </div>
+  `).join('');
+  drop.classList.add('open');
+  positionDrop();
+}
+
+function selectDest(slug,name){
+  selectedDestSlug=slug;
+  document.getElementById('dest-input').value=name;
+  hideDrop();
+}
+
+function setDestAndSearch(slug,name){
+  selectedDestSlug=slug;
+  document.getElementById('dest-input').value=name;
+  doSearch();
+}
+
+function doSearch(){
+  let slug=selectedDestSlug;
+  if(!slug){
+    const v=normalize(document.getElementById('dest-input').value);
+    const zoneSlug=CITY_ZONE[v];
+    if(zoneSlug) slug=zoneSlug;
+    else{
+      const match=destinations.find(d=>normalize(d.name).includes(v)||normalize(d.region).includes(v));
+      if(match) slug=match.slug;
+      else{window.open('https://travel.hostnfly.com/fr','_blank');return;}
+    }
+  }
+  const params={adults:guestTotal()};
+  if(checkin) params.checkin=fmtDate(checkin);
+  if(checkout) params.checkout=fmtDate(checkout);
+  window.open(smilyDestUrl(slug,params),'_blank');
+}
+
+// ===== DESTINATIONS GRID =====
+function setCat(cat,btn){
+  activeCatFilter=cat;
+  document.querySelectorAll('.cat-pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDestGrid();
+  if(leafletMap) highlightMapMarkers();
+}
+
+function showAllDests(){
+  showAllDest=!showAllDest;
+  renderDestGrid();
+  if(!showAllDest) document.getElementById('destinations').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function getFilteredDests(){
+  let list=destinations;
+  if(mapVisibleSlugs) list=list.filter(d=>mapVisibleSlugs.includes(d.slug));
+  if(activeCatFilter!=='all') list=list.filter(d=>d.cat.includes(activeCatFilter));
+  return list;
+}
+
+function renderDestGrid(){
+  const all=getFilteredDests();
+  const toShow=showAllDest?all:all.slice(0,12);
+
+  const grid=document.getElementById('dest-grid');
+  grid.innerHTML=toShow.map(d=>destCardHTML(d)).join('');
+
+  const showMoreWrap=document.getElementById('show-more-wrap');
+  const label=document.getElementById('show-more-label');
+  const icon=document.querySelector('#show-more-btn svg');
+  if(all.length>12&&!mapVisibleSlugs){
+    showMoreWrap.classList.remove('hidden');
+    if(showAllDest){
+      label.textContent='Voir moins';
+      if(icon) icon.style.transform='rotate(180deg)';
+    } else {
+      label.textContent=`Voir les ${all.length-12} autres destinations`;
+      if(icon) icon.style.transform='';
+    }
+  } else {
+    showMoreWrap.classList.add('hidden');
+  }
+}
+
+function destCardHTML(d){
+  const url=smilyDestUrl(d.slug,{adults:guestTotal(),checkin:fmtDate(checkin),checkout:fmtDate(checkout)});
+  return `
+    <a href="${url}" target="_blank" class="dest-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 block">
+      <div class="relative h-44 overflow-hidden">
+        <img src="${imgUrl(d.img)}" alt="${d.name}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy"/>
+        <div class="absolute top-3 left-3 bg-[#014fff] text-white text-xs font-bold px-2.5 py-1 rounded-full">${d.count} logements</div>
+        <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2 py-1 rounded-full text-gray-800">⭐ ${d.rating}</div>
+      </div>
+      <div class="p-4">
+        <div class="font-bold text-[#101923] text-base mb-0.5">${d.name}</div>
+        <div class="text-xs text-gray-500 mb-3">${d.region}</div>
+        <div class="flex flex-wrap gap-1.5">${d.tags.slice(0,2).map(t=>`<span class="bg-[#dce0fb] text-[#014fff] text-xs px-2 py-0.5 rounded-full">${t}</span>`).join('')}</div>
+      </div>
+    </a>
+  `;
+}
+
+// ===== COUPS DE COEUR =====
+function renderCoups(){
+  const grid=document.getElementById('coups-grid');
+  grid.innerHTML=coups_de_coeur.map(c=>`
+    <a href="https://travel.hostnfly.com/fr/rentals/${c.slug}?currency=EUR" target="_blank" class="dest-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 block">
+      <div class="relative h-56 overflow-hidden">
+        <img src="${imgUrl(c.img)}" alt="${c.title}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy"/>
+        <div class="absolute top-3 left-3 bg-white text-red-500 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">Coup de cœur ❤️</div>
+        <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm text-xs font-bold px-2.5 py-1.5 rounded-full text-gray-800">à partir de ${c.price}€/nuit</div>
+      </div>
+      <div class="p-4">
+        <div class="font-bold text-[#101923] text-base mb-1 leading-snug">${c.title}</div>
+        <div class="flex items-center gap-1 text-xs text-gray-500 mb-3">
+          <svg class="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+          ${c.location}
+        </div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-[#00B67A] text-sm">★★★★★</span>
+          <span class="text-xs font-semibold text-gray-800">${c.rating}</span>
+          <span class="text-xs text-gray-400">(${c.reviews} avis)</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5">${c.tags.slice(0,3).map(t=>`<span class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">${t}</span>`).join('')}</div>
+      </div>
+    </a>
+  `).join('');
+}
+
+// ===== FAQ =====
+function renderFAQ(){
+  const list=document.getElementById('faq-list');
+  list.innerHTML=FAQ_DATA.map((f,i)=>`
+    <div class="py-5" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <button onclick="toggleFAQ(${i})" class="w-full flex items-center justify-between gap-4 text-left" aria-expanded="false" aria-controls="faq-answer-${i}">
+        <span class="font-semibold text-[#101923] text-base" itemprop="name">${f.q}</span>
+        <svg id="faq-chevron-${i}" class="faq-chevron w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div id="faq-answer-${i}" class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <div class="pt-3 text-gray-600 leading-relaxed" itemprop="text">${f.a}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // FAQ JSON-LD
+  const faqSchema={
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":FAQ_DATA.map(f=>({
+      "@type":"Question",
+      "name":f.q,
+      "acceptedAnswer":{"@type":"Answer","text":f.a}
+    }))
+  };
+  const s=document.createElement('script');
+  s.type='application/ld+json';
+  s.textContent=JSON.stringify(faqSchema);
+  document.head.appendChild(s);
+}
+
+function toggleFAQ(i){
+  const ans=document.getElementById('faq-answer-'+i);
+  const chev=document.getElementById('faq-chevron-'+i);
+  const isOpen=ans.classList.contains('open');
+  document.querySelectorAll('.faq-answer').forEach(a=>a.classList.remove('open'));
+  document.querySelectorAll('.faq-chevron').forEach(c=>c.classList.remove('open'));
+  if(!isOpen){ans.classList.add('open');chev.classList.add('open');}
+}
+
+// ===== LEAFLET MAP =====
+function initMap(){
+  leafletMap=L.map('map-container',{center:[46.5,2.3],zoom:5,zoomControl:true});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
+    attribution:'© <a href="https://www.openstreetmap.org/copyright">OSM</a> © <a href="https://carto.com/">CARTO</a>',
+    maxZoom:19
+  }).addTo(leafletMap);
+
+  destinations.forEach(d=>{
+    const color=d.cat.includes('ski')?'#014fff':d.cat.includes('mer')?'#ff5a3c':'#8b5cf6';
+    const marker=L.circleMarker([d.lat,d.lng],{
+      radius:9,fillColor:color,color:'#fff',weight:2,fillOpacity:0.85
+    }).addTo(leafletMap);
+    marker.bindPopup(`<b>${d.name}</b><br>⭐ ${d.rating} · ${d.count} logements`);
+    marker.on('click',()=>{
+      const url=smilyDestUrl(d.slug,{adults:guestTotal(),checkin:fmtDate(checkin),checkout:fmtDate(checkout)});
+      window.open(url,'_blank');
+    });
+    d._marker=marker;
+  });
+
+  leafletMap.on('moveend zoomend',filterByMapBounds);
+}
+
+function filterByMapBounds(){
+  const bounds=leafletMap.getBounds();
+  const visible=destinations.filter(d=>bounds.contains([d.lat,d.lng]));
+  if(visible.length<3){
+    mapVisibleSlugs=null;
+  } else {
+    mapVisibleSlugs=visible.map(d=>d.slug);
+  }
+  renderDestGrid();
+}
+
+function highlightMapMarkers(){
+  destinations.forEach(d=>{
+    if(!d._marker) return;
+    const matchCat=activeCatFilter==='all'||d.cat.includes(activeCatFilter);
+    d._marker.setStyle({fillOpacity:matchCat?0.85:0.2});
+  });
+}
+
+// ===== EMAIL POPUP =====
+function closePopup(){
+  document.getElementById('email-popup').classList.remove('show');
+  localStorage.setItem('hnf_popup_shown','1');
+}
+function closePopupOnOverlay(e){
+  if(e.target===document.getElementById('email-popup')) closePopup();
+}
+function submitPopup(){
+  const email=document.getElementById('popup-email').value;
+  if(!email||!email.includes('@')) return;
+  document.getElementById('popup-form').classList.add('hidden');
+  document.getElementById('popup-success').classList.remove('hidden');
+  localStorage.setItem('hnf_popup_shown','1');
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded',()=>{
+  renderDestGrid();
+  renderCoups();
+  renderFAQ();
+  initMap();
+  if(!localStorage.getItem('hnf_popup_shown')){
+    setTimeout(()=>{document.getElementById('email-popup').classList.add('show');},10000);
+  }
+});
+</script>
+</body>
+</html>
