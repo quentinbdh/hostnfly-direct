@@ -156,6 +156,35 @@ tailwind.config = {
   .cat-pill.active{background:#014fff;color:#fff;border-color:#014fff}
   .cat-pill:hover:not(.active){background:#f0f4ff;border-color:#014fff;color:#014fff}
   html{scroll-behavior:smooth}
+  /* Mobile slider */
+  .snap-x-slider{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .snap-x-slider::-webkit-scrollbar{display:none}
+  @media(max-width:640px){
+    /* Destinations: 4 on mobile handled in JS */
+    /* Coups de cœur: horizontal slider */
+    #coups-grid{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:16px;padding-bottom:8px}
+    #coups-grid::-webkit-scrollbar{display:none}
+    #coups-grid>*{flex-shrink:0;width:272px;scroll-snap-align:start}
+    /* Typologies: horizontal slider */
+    .typo-grid{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:16px;padding-bottom:8px}
+    .typo-grid::-webkit-scrollbar{display:none}
+    .typo-grid>*{flex-shrink:0;width:260px;scroll-snap-align:start}
+    /* Avis: horizontal slider */
+    #avis-grid{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:16px;padding-bottom:8px}
+    #avis-grid::-webkit-scrollbar{display:none}
+    #avis-grid>*{flex-shrink:0;width:272px;scroll-snap-align:start}
+    /* Map: hide on mobile */
+    #map-container{display:none!important}
+    .map-legend{display:none}
+    /* Hero: reduce padding */
+    #hero .py-20{padding-top:3rem;padding-bottom:3rem}
+    /* Pourquoi HostnFly: horizontal slider on mobile */
+    #pourquoi-grid{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:16px;padding-bottom:8px}
+    #pourquoi-grid::-webkit-scrollbar{display:none}
+    #pourquoi-grid>*{flex-shrink:0;width:240px;scroll-snap-align:start}
+    /* Conciergeries: smaller cards on mobile */
+    .concierge-card{padding:12px!important}
+  }
   @media(max-width:768px){
     .cal-wrap.open{flex-direction:column;gap:16px}
     #map-container{height:300px}
@@ -180,7 +209,7 @@ tailwind.config = {
         <g><g class="lc2"><rect class="lc3" y="5.04" width="149.08" height="101.23"/></g><g class="lc4"><rect class="lc5" x="96.01" width="97.67" height="108.42"/></g><g class="lc6"><rect class="lc7" x="213.14" y="21.58" width="460.03" height="113.1"/></g><g class="lc8"><rect class="lc7" x="130.19" y="109.16" width="29.89" height="20.93"/></g></g>
       </svg>
     </a>
-    <div id="nav-search-compact" class="flex-1 max-w-md">
+    <div id="nav-search-compact" class="hidden sm:flex flex-1 max-w-md">
       <button onclick="document.getElementById('hero').scrollIntoView({behavior:'smooth'})" class="w-full flex items-center gap-3 px-4 py-2 border border-gray-200 rounded-full shadow-sm hover:shadow-md transition-shadow text-sm text-gray-500">
         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
         <span>Destination · Dates · Voyageurs</span>
@@ -202,16 +231,16 @@ tailwind.config = {
     <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1920&q=80" alt="Logements de vacances en France – Chamonix, Côte d'Azur, Paris" class="w-full h-full object-cover" fetchpriority="high" decoding="async"/>
     <div class="absolute inset-0 bg-gradient-to-b from-[#101923]/70 via-[#101923]/50 to-[#101923]/80"></div>
   </div>
-  <div class="relative z-10 w-full max-w-5xl mx-auto px-4 py-20 flex flex-col items-center text-center">
+  <div class="relative z-10 w-full max-w-5xl mx-auto px-4 py-10 md:py-20 flex flex-col items-center text-center">
     <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm text-white text-sm font-medium px-4 py-2 rounded-full mb-6 border border-white/20">
       <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
       Logements vérifiés · Experts locaux · Service 7j/7
     </div>
-    <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight mb-4">
+    <h1 class="text-3xl sm:text-4xl md:text-6xl font-bold text-white leading-tight mb-4">
       2 000 logements d'exception<br/>
       <span class="text-[#dce0fb]">en France</span>
     </h1>
-    <p class="text-lg md:text-xl text-white/80 mb-10 max-w-2xl">gérés par des experts locaux</p>
+    <p class="text-base md:text-xl text-white/80 mb-6 md:mb-10 max-w-2xl">gérés par des experts locaux</p>
 
     <!-- SEARCH BAR -->
     <div id="main-search" class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-2 md:p-3 relative">
@@ -292,14 +321,14 @@ tailwind.config = {
     </div>
 
     <!-- Quick tags -->
-    <div class="flex flex-wrap items-center justify-center gap-2 mt-6">
-      <span class="text-white/60 text-sm">Populaires :</span>
-      <button onclick="setDestAndSearch('chamonix','Chamonix')" class="bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Chamonix</button>
-      <button onclick="setDestAndSearch('cannes','Cannes')" class="bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Cannes</button>
-      <button onclick="setDestAndSearch('saint-tropez','Saint-Tropez')" class="bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Saint-Tropez</button>
-      <button onclick="setDestAndSearch('megeve','Megève')" class="bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Megève</button>
-      <button onclick="setDestAndSearch('paris','Paris')" class="bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Paris</button>
-      <button onclick="setDestAndSearch('saint-raphael','Saint-Raphaël')" class="bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Saint-Raphaël</button>
+    <div class="flex snap-x-slider overflow-x-auto sm:flex-wrap sm:justify-center items-center gap-2 mt-6 w-full pb-1">
+      <span class="text-white/60 text-sm flex-shrink-0">Populaires :</span>
+      <button onclick="setDestAndSearch('chamonix','Chamonix')" class="flex-shrink-0 whitespace-nowrap bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Chamonix</button>
+      <button onclick="setDestAndSearch('cannes','Cannes')" class="flex-shrink-0 whitespace-nowrap bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Cannes</button>
+      <button onclick="setDestAndSearch('saint-tropez','Saint-Tropez')" class="flex-shrink-0 whitespace-nowrap bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Saint-Tropez</button>
+      <button onclick="setDestAndSearch('megeve','Megève')" class="flex-shrink-0 whitespace-nowrap bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Megève</button>
+      <button onclick="setDestAndSearch('paris','Paris')" class="flex-shrink-0 whitespace-nowrap bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Paris</button>
+      <button onclick="setDestAndSearch('saint-raphael','Saint-Raphaël')" class="flex-shrink-0 whitespace-nowrap bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Saint-Raphaël</button>
     </div>
   </div>
 </section>
@@ -324,23 +353,23 @@ tailwind.config = {
 </section>
 
 <!-- DESTINATIONS + CARTE -->
-<section class="py-16 bg-white" id="destinations">
+<section class="py-10 md:py-16 bg-white" id="destinations">
   <div class="max-w-7xl mx-auto px-4">
     <div class="mb-8">
       <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-2">Explorez nos destinations</h2>
       <p class="text-gray-500 text-lg">Des logements d'exception dans toute la France</p>
     </div>
-    <div class="flex flex-wrap gap-2 mb-8">
-      <button class="cat-pill active" data-cat="all" onclick="setCat('all',this)">Toutes</button>
-      <button class="cat-pill" data-cat="ski" onclick="setCat('ski',this)">⛷️ Ski &amp; Montagne</button>
-      <button class="cat-pill" data-cat="mer" onclick="setCat('mer',this)">🏖️ Bord de mer</button>
-      <button class="cat-pill" data-cat="ville" onclick="setCat('ville',this)">🏙️ Villes</button>
+    <div class="flex snap-x-slider overflow-x-auto sm:flex-wrap gap-2 mb-8 pb-1">
+      <button class="cat-pill active flex-shrink-0" data-cat="all" onclick="setCat('all',this)">Toutes</button>
+      <button class="cat-pill flex-shrink-0" data-cat="ski" onclick="setCat('ski',this)">⛷️ Ski &amp; Montagne</button>
+      <button class="cat-pill flex-shrink-0" data-cat="mer" onclick="setCat('mer',this)">🏖️ Bord de mer</button>
+      <button class="cat-pill flex-shrink-0" data-cat="ville" onclick="setCat('ville',this)">🏙️ Villes</button>
     </div>
     <div class="flex flex-col lg:flex-row gap-8">
       <div class="w-full lg:w-[380px] flex-shrink-0">
         <div class="map-sticky">
           <div id="map-container"></div>
-          <div class="mt-3 flex flex-wrap gap-3 text-xs text-gray-600">
+          <div class="map-legend mt-3 flex flex-wrap gap-3 text-xs text-gray-600">
             <span class="flex items-center gap-1.5"><span style="background:#014fff;width:12px;height:12px;border-radius:50%;display:inline-block"></span>Ski</span>
             <span class="flex items-center gap-1.5"><span style="background:#ff5a3c;width:12px;height:12px;border-radius:50%;display:inline-block"></span>Mer</span>
             <span class="flex items-center gap-1.5"><span style="background:#8b5cf6;width:12px;height:12px;border-radius:50%;display:inline-block"></span>Ville</span>
@@ -361,7 +390,7 @@ tailwind.config = {
 </section>
 
 <!-- COUPS DE COEUR -->
-<section class="py-16 bg-gray-50">
+<section class="py-10 md:py-16 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4">
     <div class="mb-10">
       <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-2">Nos villas coup de cœur</h2>
@@ -372,13 +401,13 @@ tailwind.config = {
 </section>
 
 <!-- TYPOLOGIES -->
-<section class="py-16 bg-white">
+<section class="py-10 md:py-16 bg-white">
   <div class="max-w-7xl mx-auto px-4">
     <div class="mb-10">
       <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-2">Trouvez le logement idéal</h2>
       <p class="text-gray-500 text-lg">Des sélections pensées pour votre séjour</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="typo-grid grid grid-cols-1 md:grid-cols-3 gap-6">
 
       <!-- Piscine -->
       <a href="https://travel.hostnfly.com/fr/rentals/search?amenity_mode=all&pool_private=1&rentals_tag_mode=all" target="_blank"
@@ -445,10 +474,10 @@ tailwind.config = {
 </section>
 
 <!-- POURQUOI HOSTNFLY -->
-<section class="py-16 bg-white">
+<section class="py-10 md:py-16 bg-white">
   <div class="max-w-5xl mx-auto px-4">
     <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-12 text-center">Pourquoi réserver avec HostnFly ?</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="pourquoi-grid">
       <div class="text-center p-8 rounded-2xl bg-[#f0f4ff]">
         <div class="w-16 h-16 bg-[#014fff] rounded-2xl flex items-center justify-center mx-auto mb-5">
           <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -475,14 +504,14 @@ tailwind.config = {
 </section>
 
 <!-- CONCIERGERIES LOCALES -->
-<section class="py-16 bg-gray-50">
+<section class="py-10 md:py-16 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4">
     <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-3 text-center">Nos équipes locales</h2>
     <p class="text-gray-500 text-center mb-12 text-lg">Des experts du territoire, disponibles 7j/7 pour vous</p>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
 
       <!-- Chamonix -->
-      <a href="https://hostnfly.com/conciergerie-airbnb/chamonix" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+      <a href="https://hostnfly.com/conciergerie-airbnb/chamonix" target="_blank" class="concierge-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">CL</div>
           <div>
@@ -494,7 +523,7 @@ tailwind.config = {
       </a>
 
       <!-- Cannes · Antibes -->
-      <a href="https://hostnfly.com/conciergerie-airbnb/cannes" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+      <a href="https://hostnfly.com/conciergerie-airbnb/cannes" target="_blank" class="concierge-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">LP</div>
           <div>
@@ -506,7 +535,7 @@ tailwind.config = {
       </a>
 
       <!-- Serre-Chevalier -->
-      <a href="https://hostnfly.com/conciergerie-airbnb/serre-chevalier" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+      <a href="https://hostnfly.com/conciergerie-airbnb/serre-chevalier" target="_blank" class="concierge-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">LD</div>
           <div>
@@ -518,7 +547,7 @@ tailwind.config = {
       </a>
 
       <!-- Six-Fours -->
-      <a href="https://hostnfly.com/conciergerie-airbnb/six-fours-les-plages" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+      <a href="https://hostnfly.com/conciergerie-airbnb/six-fours-les-plages" target="_blank" class="concierge-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">JB</div>
           <div>
@@ -530,7 +559,7 @@ tailwind.config = {
       </a>
 
       <!-- Megève -->
-      <a href="https://hostnfly.com/conciergerie-airbnb/megeve" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+      <a href="https://hostnfly.com/conciergerie-airbnb/megeve" target="_blank" class="concierge-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">TG</div>
           <div>
@@ -542,7 +571,7 @@ tailwind.config = {
       </a>
 
       <!-- Saint-Raphaël · Fréjus -->
-      <a href="https://hostnfly.com/conciergerie-airbnb/saint-raphael" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+      <a href="https://hostnfly.com/conciergerie-airbnb/saint-raphael" target="_blank" class="concierge-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">EA</div>
           <div>
@@ -554,7 +583,7 @@ tailwind.config = {
       </a>
 
       <!-- Paris -->
-      <a href="https://hostnfly.com/conciergerie-airbnb/paris" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+      <a href="https://hostnfly.com/conciergerie-airbnb/paris" target="_blank" class="concierge-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">AH</div>
           <div>
@@ -566,7 +595,7 @@ tailwind.config = {
       </a>
 
       <!-- Toulouse -->
-      <a href="https://hostnfly.com/conciergerie-airbnb/toulouse" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+      <a href="https://hostnfly.com/conciergerie-airbnb/toulouse" target="_blank" class="concierge-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">JB</div>
           <div>
@@ -578,7 +607,7 @@ tailwind.config = {
       </a>
 
       <!-- Gérardmer -->
-      <a href="https://hostnfly.com/conciergerie-airbnb/gerardmer" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+      <a href="https://hostnfly.com/conciergerie-airbnb/gerardmer" target="_blank" class="concierge-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">YL</div>
           <div>
@@ -590,7 +619,7 @@ tailwind.config = {
       </a>
 
       <!-- Nice -->
-      <a href="https://hostnfly.com/conciergerie-airbnb/nice" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+      <a href="https://hostnfly.com/conciergerie-airbnb/nice" target="_blank" class="concierge-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">CB</div>
           <div>
@@ -602,7 +631,7 @@ tailwind.config = {
       </a>
 
       <!-- Deauville · Cabourg -->
-      <a href="https://hostnfly.com/conciergerie-airbnb/deauville" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+      <a href="https://hostnfly.com/conciergerie-airbnb/deauville" target="_blank" class="concierge-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">AH</div>
           <div>
@@ -614,7 +643,7 @@ tailwind.config = {
       </a>
 
       <!-- Saint-Tropez -->
-      <a href="https://hostnfly.com/conciergerie-airbnb/saint-tropez" target="_blank" class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+      <a href="https://hostnfly.com/conciergerie-airbnb/saint-tropez" target="_blank" class="concierge-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">VM</div>
           <div>
@@ -630,11 +659,11 @@ tailwind.config = {
 </section>
 
 <!-- AVIS VOYAGEURS -->
-<section class="py-16 bg-white">
+<section class="py-10 md:py-16 bg-white">
   <div class="max-w-5xl mx-auto px-4">
     <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-3 text-center">Ce que disent nos voyageurs</h2>
     <p class="text-gray-500 text-center mb-12 text-lg">Des milliers de voyageurs nous font confiance chaque année</p>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="avis-grid">
       <div class="bg-gray-50 rounded-2xl p-6">
         <div class="text-[#00B67A] mb-4 text-lg">★★★★★</div>
         <p class="text-gray-700 italic mb-5 leading-relaxed">"Logement impeccable, équipe réactive et très professionnelle. Check-in parfait, le chalet était exactement comme sur les photos. On reviendra !"</p>
@@ -664,7 +693,7 @@ tailwind.config = {
 </section>
 
 <!-- FAQ -->
-<section class="py-16 bg-gray-50" aria-labelledby="faq-heading">
+<section class="py-10 md:py-16 bg-gray-50" aria-labelledby="faq-heading">
   <div class="max-w-3xl mx-auto px-4">
     <h2 id="faq-heading" class="text-3xl md:text-4xl font-bold text-[#101923] mb-12 text-center">Questions fréquentes</h2>
     <div class="divide-y divide-gray-200 border-y border-gray-200" id="faq-list" itemscope itemtype="https://schema.org/FAQPage"></div>
@@ -672,7 +701,7 @@ tailwind.config = {
 </section>
 
 <!-- CTA PROPRIETAIRES -->
-<section class="py-20 bg-[#101923]">
+<section class="py-12 md:py-20 bg-[#101923]">
   <div class="max-w-3xl mx-auto px-4 text-center">
     <div class="text-5xl mb-6">🏡</div>
     <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Vous êtes propriétaire ?</h2>
@@ -1237,7 +1266,8 @@ function getFilteredDests(){
 
 function renderDestGrid(){
   const all=getFilteredDests();
-  const toShow=showAllDest?all:all.slice(0,12);
+  const initCount=window.innerWidth<640?4:12;
+  const toShow=showAllDest?all:all.slice(0,initCount);
 
   const grid=document.getElementById('dest-grid');
   grid.innerHTML=toShow.map(d=>destCardHTML(d)).join('');
@@ -1245,13 +1275,13 @@ function renderDestGrid(){
   const showMoreWrap=document.getElementById('show-more-wrap');
   const label=document.getElementById('show-more-label');
   const icon=document.querySelector('#show-more-btn svg');
-  if(all.length>12&&!mapVisibleSlugs){
+  if(all.length>initCount&&!mapVisibleSlugs){
     showMoreWrap.classList.remove('hidden');
     if(showAllDest){
       label.textContent='Voir moins';
       if(icon) icon.style.transform='rotate(180deg)';
     } else {
-      label.textContent=`Voir les ${all.length-12} autres destinations`;
+      label.textContent=`Voir les ${all.length-initCount} autres destinations`;
       if(icon) icon.style.transform='';
     }
   } else {
