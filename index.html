@@ -212,13 +212,17 @@ tailwind.config = {
     <div id="nav-search-compact" class="hidden sm:flex flex-1 max-w-md">
       <button onclick="document.getElementById('hero').scrollIntoView({behavior:'smooth'})" class="w-full flex items-center gap-3 px-4 py-2 border border-gray-200 rounded-full shadow-sm hover:shadow-md transition-shadow text-sm text-gray-500">
         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
-        <span>Destination · Dates · Voyageurs</span>
+        <span id="nav-compact-text">Destination · Dates · Voyageurs</span>
       </button>
     </div>
     <div class="flex items-center gap-3 flex-shrink-0">
-      <a href="https://www.hostnfly.com" target="_blank" class="hidden md:inline-flex text-sm font-medium text-gray-700 hover:text-[#014fff] transition-colors">Mettre mon logement en location</a>
-      <a href="https://travel.hostnfly.com/fr/rentals/search" target="_blank" class="inline-flex items-center gap-1.5 bg-[#014fff] text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-[#0140cc] transition-colors">
-        Tous les logements
+      <div class="flex items-center border border-gray-200 rounded-full overflow-hidden text-xs font-bold flex-shrink-0">
+        <button id="btn-lang-fr" onclick="setLang('fr')" class="px-3 py-1.5 bg-[#014fff] text-white text-xs font-bold">FR</button>
+        <button id="btn-lang-en" onclick="setLang('en')" class="px-3 py-1.5 text-gray-400 hover:bg-gray-50 transition-colors text-xs font-bold">EN</button>
+      </div>
+      <a id="nav-owner-link" href="https://www.hostnfly.com" target="_blank" class="hidden md:inline-flex text-sm font-medium text-gray-700 hover:text-[#014fff] transition-colors">Mettre mon logement en location</a>
+      <a id="nav-listings-btn" href="https://travel.hostnfly.com/fr/rentals/search" target="_blank" class="inline-flex items-center gap-1.5 bg-[#014fff] text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-[#0140cc] transition-colors">
+        <span id="nav-listings-text">Tous les logements</span>
       </a>
     </div>
   </div>
@@ -234,22 +238,22 @@ tailwind.config = {
   <div class="relative z-10 w-full max-w-5xl mx-auto px-4 py-10 md:py-20 flex flex-col items-center text-center">
     <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm text-white text-sm font-medium px-4 py-2 rounded-full mb-6 border border-white/20">
       <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-      Logements vérifiés · Experts locaux · Service 7j/7
+      <span id="hero-badge-text">Logements vérifiés · Experts locaux · Service 7j/7</span>
     </div>
     <h1 class="text-3xl sm:text-4xl md:text-6xl font-bold text-white leading-tight mb-4">
-      2 000 logements d'exception<br/>
-      <span class="text-[#dce0fb]">en France</span>
+      <span id="hero-title1">2 000 logements d'exception</span><br/>
+      <span class="text-[#dce0fb]" id="hero-title2">en France</span>
     </h1>
-    <p class="text-base md:text-xl text-white/80 mb-6 md:mb-10 max-w-2xl">gérés par des experts locaux</p>
+    <p id="hero-subtitle" class="text-base md:text-xl text-white/80 mb-6 md:mb-10 max-w-2xl">gérés par des experts locaux</p>
 
     <!-- SEARCH BAR -->
     <div id="main-search" class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-2 md:p-3 relative">
       <div class="flex flex-col md:flex-row gap-2 md:gap-0 md:items-stretch">
         <!-- Destination -->
         <div class="relative flex-1 md:border-r border-gray-200">
-          <div id="sf-dest" class="px-4 py-3 rounded-xl cursor-text" onclick="document.getElementById('dest-input').focus()">
-            <div class="text-xs font-semibold text-gray-500 mb-0.5">Destination</div>
-            <input id="dest-input" type="text" placeholder="Où souhaitez-vous aller ?" autocomplete="off"
+          <div id="sf-dest" class="px-4 py-3 rounded-xl cursor-text" onclick="document.getElementById('dest-input-el').focus()">
+            <div id="sf-dest-label" class="text-xs font-semibold text-gray-500 mb-0.5">Destination</div>
+            <input id="dest-input-el" type="text" placeholder="Où souhaitez-vous aller ?" autocomplete="off"
               class="w-full text-sm font-medium text-gray-800 placeholder-gray-400 outline-none bg-transparent"
               oninput="onDestInput(this.value)" onfocus="openDestDrop()"/>
           </div>
@@ -258,27 +262,27 @@ tailwind.config = {
         <!-- Checkin -->
         <div class="relative flex-shrink-0">
           <div id="sf-checkin" class="px-4 py-3 rounded-xl cursor-pointer min-w-[140px]" onclick="openCal('checkin')">
-            <div class="text-xs font-semibold text-gray-500 mb-0.5">Arrivée</div>
-            <div id="checkin-display" class="text-sm font-medium text-gray-400">Ajouter une date</div>
+            <div id="sf-checkin-label" class="text-xs font-semibold text-gray-500 mb-0.5">Arrivée</div>
+            <div id="checkin-display" data-placeholder="Ajouter une date" class="text-sm font-medium text-gray-400">Ajouter une date</div>
           </div>
         </div>
         <!-- Checkout -->
         <div class="relative flex-shrink-0 md:border-r border-gray-200">
           <div id="sf-checkout" class="px-4 py-3 rounded-xl cursor-pointer min-w-[140px]" onclick="openCal('checkout')">
-            <div class="text-xs font-semibold text-gray-500 mb-0.5">Départ</div>
-            <div id="checkout-display" class="text-sm font-medium text-gray-400">Ajouter une date</div>
+            <div id="sf-checkout-label" class="text-xs font-semibold text-gray-500 mb-0.5">Départ</div>
+            <div id="checkout-display" data-placeholder="Ajouter une date" class="text-sm font-medium text-gray-400">Ajouter une date</div>
           </div>
         </div>
         <!-- Guests -->
         <div class="relative flex-shrink-0">
           <div id="sf-guests" class="px-4 py-3 rounded-xl cursor-pointer min-w-[160px]" onclick="toggleGuestPicker(event)">
-            <div class="text-xs font-semibold text-gray-500 mb-0.5">Voyageurs</div>
+            <div id="sf-guests-label" class="text-xs font-semibold text-gray-500 mb-0.5">Voyageurs</div>
             <div id="guests-display" class="text-sm font-medium text-gray-400">Ajouter des voyageurs</div>
           </div>
           <div id="guest-picker" class="hidden">
             <div class="space-y-4">
               <div class="flex items-center justify-between gap-4">
-                <div class="flex-1"><div class="font-medium text-gray-800 text-sm">Adultes</div><div class="text-xs text-gray-500 whitespace-nowrap">18 ans et +</div></div>
+                <div class="flex-1"><div id="guest-adults-lbl" class="font-medium text-gray-800 text-sm">Adultes</div><div id="guest-adults-sub" class="text-xs text-gray-500 whitespace-nowrap">18 ans et +</div></div>
                 <div class="flex items-center gap-3 flex-shrink-0">
                   <button onclick="adjustGuest('adults',-1)" class="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-[#014fff] hover:text-[#014fff] transition-colors font-bold text-lg">−</button>
                   <span id="adults-count" class="w-6 text-center font-semibold text-sm">1</span>
@@ -286,7 +290,7 @@ tailwind.config = {
                 </div>
               </div>
               <div class="flex items-center justify-between gap-4">
-                <div class="flex-1"><div class="font-medium text-gray-800 text-sm">Enfants</div><div class="text-xs text-gray-500 whitespace-nowrap">3 à 17 ans</div></div>
+                <div class="flex-1"><div id="guest-children-lbl" class="font-medium text-gray-800 text-sm">Enfants</div><div id="guest-children-sub" class="text-xs text-gray-500 whitespace-nowrap">3 à 17 ans</div></div>
                 <div class="flex items-center gap-3 flex-shrink-0">
                   <button onclick="adjustGuest('children',-1)" class="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-[#014fff] hover:text-[#014fff] transition-colors font-bold text-lg">−</button>
                   <span id="children-count" class="w-6 text-center font-semibold text-sm">0</span>
@@ -294,14 +298,14 @@ tailwind.config = {
                 </div>
               </div>
               <div class="flex items-center justify-between gap-4">
-                <div class="flex-1"><div class="font-medium text-gray-800 text-sm">Bébés</div><div class="text-xs text-gray-500 whitespace-nowrap">Moins de 3 ans</div></div>
+                <div class="flex-1"><div id="guest-babies-lbl" class="font-medium text-gray-800 text-sm">Bébés</div><div id="guest-babies-sub" class="text-xs text-gray-500 whitespace-nowrap">Moins de 3 ans</div></div>
                 <div class="flex items-center gap-3 flex-shrink-0">
                   <button onclick="adjustGuest('babies',-1)" class="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-[#014fff] hover:text-[#014fff] transition-colors font-bold text-lg">−</button>
                   <span id="babies-count" class="w-6 text-center font-semibold text-sm">0</span>
                   <button onclick="adjustGuest('babies',1)" class="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-600 hover:border-[#014fff] hover:text-[#014fff] transition-colors font-bold text-lg">+</button>
                 </div>
               </div>
-              <button onclick="document.getElementById('guest-picker').classList.add('hidden')" class="w-full bg-[#014fff] text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-[#0140cc] transition-colors">Valider</button>
+              <button id="guest-validate-btn" onclick="document.getElementById('guest-picker').classList.add('hidden')" class="w-full bg-[#014fff] text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-[#0140cc] transition-colors">Valider</button>
             </div>
           </div>
         </div>
@@ -309,7 +313,7 @@ tailwind.config = {
         <div class="flex items-center px-2">
           <button onclick="doSearch()" class="bg-[#014fff] hover:bg-[#0140cc] text-white font-bold px-6 py-3.5 rounded-xl transition-colors flex items-center gap-2 w-full md:w-auto justify-center">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
-            <span>Rechercher</span>
+            <span id="search-btn-text">Rechercher</span>
           </button>
         </div>
       </div>
@@ -322,7 +326,7 @@ tailwind.config = {
 
     <!-- Quick tags -->
     <div class="flex snap-x-slider overflow-x-auto sm:flex-wrap sm:justify-center items-center gap-2 mt-6 w-full pb-1">
-      <span class="text-white/60 text-sm flex-shrink-0">Populaires :</span>
+      <span id="popular-label" class="text-white/60 text-sm flex-shrink-0">Populaires :</span>
       <button onclick="setDestAndSearch('chamonix','Chamonix')" class="flex-shrink-0 whitespace-nowrap bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Chamonix</button>
       <button onclick="setDestAndSearch('cannes','Cannes')" class="flex-shrink-0 whitespace-nowrap bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Cannes</button>
       <button onclick="setDestAndSearch('saint-tropez','Saint-Tropez')" class="flex-shrink-0 whitespace-nowrap bg-white/15 hover:bg-white/25 text-white text-sm px-3 py-1.5 rounded-full border border-white/20 transition-colors backdrop-blur-sm">Saint-Tropez</button>
@@ -341,14 +345,14 @@ tailwind.config = {
       <span class="font-bold text-gray-800 text-lg">Trustpilot</span>
     </div>
     <div class="flex items-center gap-2">
-      <span class="font-bold text-gray-800">Excellent</span>
+      <span id="tp-excellent" class="font-bold text-gray-800">Excellent</span>
       <div class="flex">
         <span class="tp-star">★★★★</span><span style="color:#00B67A;font-size:1.1rem;opacity:0.6">★</span>
       </div>
       <span class="font-bold text-gray-800">4,6 / 5</span>
     </div>
-    <div class="text-sm text-gray-500">Basé sur 300+ avis vérifiés</div>
-    <a href="https://fr.trustpilot.com/review/www.hostnfly.com" target="_blank" class="text-sm text-[#00B67A] font-medium hover:underline">Voir les avis →</a>
+    <div id="tp-based" class="text-sm text-gray-500">Basé sur 300+ avis vérifiés</div>
+    <a id="tp-see" href="https://fr.trustpilot.com/review/www.hostnfly.com" target="_blank" class="text-sm text-[#00B67A] font-medium hover:underline">Voir les avis →</a>
   </div>
 </section>
 
@@ -356,14 +360,14 @@ tailwind.config = {
 <section class="py-10 md:py-16 bg-white" id="destinations">
   <div class="max-w-7xl mx-auto px-4">
     <div class="mb-8">
-      <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-2">Explorez nos destinations</h2>
-      <p class="text-gray-500 text-lg">Des logements d'exception dans toute la France</p>
+      <h2 id="dest-section-title" class="text-3xl md:text-4xl font-bold text-[#101923] mb-2">Explorez nos destinations</h2>
+      <p id="dest-section-sub" class="text-gray-500 text-lg">Des logements d'exception dans toute la France</p>
     </div>
     <div class="flex snap-x-slider overflow-x-auto sm:flex-wrap gap-2 mb-8 pb-1">
-      <button class="cat-pill active flex-shrink-0" data-cat="all" onclick="setCat('all',this)">Toutes</button>
-      <button class="cat-pill flex-shrink-0" data-cat="ski" onclick="setCat('ski',this)">⛷️ Ski &amp; Montagne</button>
-      <button class="cat-pill flex-shrink-0" data-cat="mer" onclick="setCat('mer',this)">🏖️ Bord de mer</button>
-      <button class="cat-pill flex-shrink-0" data-cat="ville" onclick="setCat('ville',this)">🏙️ Villes</button>
+      <button id="cat-all" class="cat-pill active flex-shrink-0" data-cat="all" onclick="setCat('all',this)">Toutes</button>
+      <button id="cat-ski" class="cat-pill flex-shrink-0" data-cat="ski" onclick="setCat('ski',this)">⛷️ Ski &amp; Montagne</button>
+      <button id="cat-mer" class="cat-pill flex-shrink-0" data-cat="mer" onclick="setCat('mer',this)">🏖️ Bord de mer</button>
+      <button id="cat-ville" class="cat-pill flex-shrink-0" data-cat="ville" onclick="setCat('ville',this)">🏙️ Villes</button>
     </div>
     <div class="flex flex-col lg:flex-row gap-8">
       <div class="w-full lg:w-[380px] flex-shrink-0">
@@ -393,8 +397,8 @@ tailwind.config = {
 <section class="py-10 md:py-16 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4">
     <div class="mb-10">
-      <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-2">Nos villas coup de cœur</h2>
-      <p class="text-gray-500 text-lg">Une sélection d'adresses d'exception gérées par HostnFly</p>
+      <h2 id="coeur-title" class="text-3xl md:text-4xl font-bold text-[#101923] mb-2">Nos villas coup de cœur</h2>
+      <p id="coeur-sub" class="text-gray-500 text-lg">Une sélection d'adresses d'exception gérées par HostnFly</p>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="coups-grid"></div>
   </div>
@@ -404,13 +408,13 @@ tailwind.config = {
 <section class="py-10 md:py-16 bg-white">
   <div class="max-w-7xl mx-auto px-4">
     <div class="mb-10">
-      <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-2">Trouvez le logement idéal</h2>
-      <p class="text-gray-500 text-lg">Des sélections pensées pour votre séjour</p>
+      <h2 id="typo-title" class="text-3xl md:text-4xl font-bold text-[#101923] mb-2">Trouvez le logement idéal</h2>
+      <p id="typo-sub" class="text-gray-500 text-lg">Des sélections pensées pour votre séjour</p>
     </div>
     <div class="typo-grid grid grid-cols-1 md:grid-cols-3 gap-6">
 
       <!-- Piscine -->
-      <a href="https://travel.hostnfly.com/fr/rentals/search?amenity_mode=all&pool_private=1&rentals_tag_mode=all" target="_blank"
+      <a id="typo-pool-link" href="https://travel.hostnfly.com/fr/rentals/search?amenity_mode=all&pool_private=1&rentals_tag_mode=all" target="_blank"
          class="group relative rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-shadow block">
         <div class="h-56 overflow-hidden">
           <img src="https://images.unsplash.com/photo-1728479943088-2eaea8c0cc56?auto=format&fit=crop&w=800&q=80"
@@ -420,17 +424,17 @@ tailwind.config = {
         <div class="absolute bottom-0 left-0 right-0 p-5">
           <div class="flex items-center gap-2 mb-1">
             <span class="text-2xl">🏊</span>
-            <span class="text-white font-bold text-xl">Avec piscine</span>
+            <span id="typo-pool-title" class="text-white font-bold text-xl">Avec piscine</span>
           </div>
-          <p class="text-white/80 text-sm">Profitez d'une piscine privée pour votre séjour</p>
+          <p id="typo-pool-desc" class="text-white/80 text-sm">Profitez d'une piscine privée pour votre séjour</p>
           <span class="inline-flex items-center gap-1 mt-3 text-[#dce0fb] text-sm font-semibold group-hover:gap-2 transition-all">
-            Voir les logements <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            <span id="typo-pool-cta">Voir les logements</span> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </span>
         </div>
       </a>
 
       <!-- Jardin -->
-      <a href="https://travel.hostnfly.com/fr/rentals/search?amenity_mode=all&garden=1&rentals_tag_mode=all" target="_blank"
+      <a id="typo-garden-link" href="https://travel.hostnfly.com/fr/rentals/search?amenity_mode=all&garden=1&rentals_tag_mode=all" target="_blank"
          class="group relative rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-shadow block">
         <div class="h-56 overflow-hidden">
           <img src="https://images.unsplash.com/photo-1578758509716-b9d9aabb85ec?auto=format&fit=crop&w=800&q=80"
@@ -440,17 +444,17 @@ tailwind.config = {
         <div class="absolute bottom-0 left-0 right-0 p-5">
           <div class="flex items-center gap-2 mb-1">
             <span class="text-2xl">🌿</span>
-            <span class="text-white font-bold text-xl">Maison avec jardin</span>
+            <span id="typo-garden-title" class="text-white font-bold text-xl">Maison avec jardin</span>
           </div>
-          <p class="text-white/80 text-sm">Un espace extérieur privatif pour se ressourcer</p>
+          <p id="typo-garden-desc" class="text-white/80 text-sm">Un espace extérieur privatif pour se ressourcer</p>
           <span class="inline-flex items-center gap-1 mt-3 text-[#dce0fb] text-sm font-semibold group-hover:gap-2 transition-all">
-            Voir les logements <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            <span id="typo-garden-cta">Voir les logements</span> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </span>
         </div>
       </a>
 
       <!-- Familles -->
-      <a href="https://travel.hostnfly.com/fr/rentals/search?amenity_mode=all&bedrooms_count=3&rentals_tag_mode=all" target="_blank"
+      <a id="typo-family-link" href="https://travel.hostnfly.com/fr/rentals/search?amenity_mode=all&bedrooms_count=3&rentals_tag_mode=all" target="_blank"
          class="group relative rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-shadow block">
         <div class="h-56 overflow-hidden">
           <img src="https://images.unsplash.com/photo-1679683171686-6242c0fde282?auto=format&fit=crop&w=800&q=80"
@@ -460,11 +464,11 @@ tailwind.config = {
         <div class="absolute bottom-0 left-0 right-0 p-5">
           <div class="flex items-center gap-2 mb-1">
             <span class="text-2xl">👨‍👩‍👧‍👦</span>
-            <span class="text-white font-bold text-xl">Parfait pour familles</span>
+            <span id="typo-family-title" class="text-white font-bold text-xl">Parfait pour familles</span>
           </div>
-          <p class="text-white/80 text-sm">3 chambres et plus pour des vacances en grand</p>
+          <p id="typo-family-desc" class="text-white/80 text-sm">3 chambres et plus pour des vacances en grand</p>
           <span class="inline-flex items-center gap-1 mt-3 text-[#dce0fb] text-sm font-semibold group-hover:gap-2 transition-all">
-            Voir les logements <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            <span id="typo-family-cta">Voir les logements</span> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </span>
         </div>
       </a>
@@ -476,28 +480,28 @@ tailwind.config = {
 <!-- POURQUOI HOSTNFLY -->
 <section class="py-10 md:py-16 bg-white">
   <div class="max-w-5xl mx-auto px-4">
-    <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-12 text-center">Pourquoi réserver avec HostnFly ?</h2>
+    <h2 id="why-title" class="text-3xl md:text-4xl font-bold text-[#101923] mb-12 text-center">Pourquoi réserver avec HostnFly ?</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="pourquoi-grid">
       <div class="text-center p-8 rounded-2xl bg-[#f0f4ff]">
         <div class="w-16 h-16 bg-[#014fff] rounded-2xl flex items-center justify-center mx-auto mb-5">
           <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
-        <h3 class="text-xl font-bold text-[#101923] mb-3">Meilleur prix garanti</h3>
-        <p class="text-gray-600 leading-relaxed">En réservant directement, vous bénéficiez du meilleur tarif disponible, sans frais cachés.</p>
+        <h3 id="why1-title" class="text-xl font-bold text-[#101923] mb-3">Meilleur prix garanti</h3>
+        <p id="why1-desc" class="text-gray-600 leading-relaxed">En réservant directement, vous bénéficiez du meilleur tarif disponible, sans frais cachés.</p>
       </div>
       <div class="text-center p-8 rounded-2xl bg-[#f0f4ff]">
         <div class="w-16 h-16 bg-[#014fff] rounded-2xl flex items-center justify-center mx-auto mb-5">
           <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
         </div>
-        <h3 class="text-xl font-bold text-[#101923] mb-3">Experts locaux 7j/7</h3>
-        <p class="text-gray-600 leading-relaxed">Nos équipes présentes sur le terrain vous accompagnent avant, pendant et après votre séjour.</p>
+        <h3 id="why2-title" class="text-xl font-bold text-[#101923] mb-3">Experts locaux 7j/7</h3>
+        <p id="why2-desc" class="text-gray-600 leading-relaxed">Nos équipes présentes sur le terrain vous accompagnent avant, pendant et après votre séjour.</p>
       </div>
       <div class="text-center p-8 rounded-2xl bg-[#f0f4ff]">
         <div class="w-16 h-16 bg-[#014fff] rounded-2xl flex items-center justify-center mx-auto mb-5">
           <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
         </div>
-        <h3 class="text-xl font-bold text-[#101923] mb-3">Logements vérifiés</h3>
-        <p class="text-gray-600 leading-relaxed">Chaque logement est sélectionné, photographié et inspecté par nos équipes. Note moyenne 4.88 ⭐</p>
+        <h3 id="why3-title" class="text-xl font-bold text-[#101923] mb-3">Logements vérifiés</h3>
+        <p id="why3-desc" class="text-gray-600 leading-relaxed">Chaque logement est sélectionné, photographié et inspecté par nos équipes. Note moyenne 4.88 ⭐</p>
       </div>
     </div>
   </div>
@@ -506,8 +510,8 @@ tailwind.config = {
 <!-- CONCIERGERIES LOCALES -->
 <section class="py-10 md:py-16 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4">
-    <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-3 text-center">Nos équipes locales</h2>
-    <p class="text-gray-500 text-center mb-12 text-lg">Des experts du territoire, disponibles 7j/7 pour vous</p>
+    <h2 id="concierge-title" class="text-3xl md:text-4xl font-bold text-[#101923] mb-3 text-center">Nos équipes locales</h2>
+    <p id="concierge-sub" class="text-gray-500 text-center mb-12 text-lg">Des experts du territoire, disponibles 7j/7 pour vous</p>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
 
       <!-- Chamonix -->
@@ -661,31 +665,31 @@ tailwind.config = {
 <!-- AVIS VOYAGEURS -->
 <section class="py-10 md:py-16 bg-white">
   <div class="max-w-5xl mx-auto px-4">
-    <h2 class="text-3xl md:text-4xl font-bold text-[#101923] mb-3 text-center">Ce que disent nos voyageurs</h2>
-    <p class="text-gray-500 text-center mb-12 text-lg">Des milliers de voyageurs nous font confiance chaque année</p>
+    <h2 id="avis-title" class="text-3xl md:text-4xl font-bold text-[#101923] mb-3 text-center">Ce que disent nos voyageurs</h2>
+    <p id="avis-sub" class="text-gray-500 text-center mb-12 text-lg">Des milliers de voyageurs nous font confiance chaque année</p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="avis-grid">
       <div class="bg-gray-50 rounded-2xl p-6">
         <div class="text-[#00B67A] mb-4 text-lg">★★★★★</div>
-        <p class="text-gray-700 italic mb-5 leading-relaxed">"Logement impeccable, équipe réactive et très professionnelle. Check-in parfait, le chalet était exactement comme sur les photos. On reviendra !"</p>
+        <p id="avis1-text" class="text-gray-700 italic mb-5 leading-relaxed">"Logement impeccable, équipe réactive et très professionnelle. Check-in parfait, le chalet était exactement comme sur les photos. On reviendra !"</p>
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold">S</div>
-          <div><div class="font-semibold text-[#101923] text-sm">Sophie M.</div><div class="text-xs text-gray-500">Chamonix · Février 2025</div></div>
+          <div><div id="avis1-name" class="font-semibold text-[#101923] text-sm">Sophie M.</div><div id="avis1-loc" class="text-xs text-gray-500">Chamonix · Février 2025</div></div>
         </div>
       </div>
       <div class="bg-gray-50 rounded-2xl p-6">
         <div class="text-[#00B67A] mb-4 text-lg">★★★★★</div>
-        <p class="text-gray-700 italic mb-5 leading-relaxed">"Villa absolument magnifique face à la mer. Les équipes HostnFly ont été aux petits soins. Réservation fluide, communication parfaite. Je recommande."</p>
+        <p id="avis2-text" class="text-gray-700 italic mb-5 leading-relaxed">"Villa absolument magnifique face à la mer. Les équipes HostnFly ont été aux petits soins. Réservation fluide, communication parfaite. Je recommande."</p>
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold">T</div>
-          <div><div class="font-semibold text-[#101923] text-sm">Thomas B.</div><div class="text-xs text-gray-500">Saint-Tropez · Août 2025</div></div>
+          <div><div id="avis2-name" class="font-semibold text-[#101923] text-sm">Thomas B.</div><div id="avis2-loc" class="text-xs text-gray-500">Saint-Tropez · Août 2025</div></div>
         </div>
       </div>
       <div class="bg-gray-50 rounded-2xl p-6">
         <div class="text-[#00B67A] mb-4 text-lg">★★★★★</div>
-        <p class="text-gray-700 italic mb-5 leading-relaxed">"Tout était parfait du début à la fin. L'appartement parisien dépassait nos attentes, et le support HostnFly a été disponible à toute heure. Merci !"</p>
+        <p id="avis3-text" class="text-gray-700 italic mb-5 leading-relaxed">"Tout était parfait du début à la fin. L'appartement parisien dépassait nos attentes, et le support HostnFly a été disponible à toute heure. Merci !"</p>
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-[#014fff] rounded-full flex items-center justify-center text-white font-bold">C</div>
-          <div><div class="font-semibold text-[#101923] text-sm">Claire &amp; Pierre D.</div><div class="text-xs text-gray-500">Paris · Novembre 2025</div></div>
+          <div><div id="avis3-name" class="font-semibold text-[#101923] text-sm">Claire &amp; Pierre D.</div><div id="avis3-loc" class="text-xs text-gray-500">Paris · Novembre 2025</div></div>
         </div>
       </div>
     </div>
@@ -704,10 +708,10 @@ tailwind.config = {
 <section class="py-12 md:py-20 bg-[#101923]">
   <div class="max-w-3xl mx-auto px-4 text-center">
     <div class="text-5xl mb-6">🏡</div>
-    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Vous êtes propriétaire ?</h2>
-    <p class="text-gray-300 text-lg mb-8 leading-relaxed">Confiez votre logement à HostnFly et bénéficiez d'une gestion complète : accueil, ménage, linge de maison et optimisation des revenus. Rejoignez 2 000 propriétaires qui nous font confiance.</p>
+    <h2 id="owner-title" class="text-3xl md:text-4xl font-bold text-white mb-4">Vous êtes propriétaire ?</h2>
+    <p id="owner-desc" class="text-gray-300 text-lg mb-8 leading-relaxed">Confiez votre logement à HostnFly et bénéficiez d'une gestion complète : accueil, ménage, linge de maison et optimisation des revenus. Rejoignez 2 000 propriétaires qui nous font confiance.</p>
     <a href="https://www.hostnfly.com" target="_blank" class="inline-flex items-center gap-2 bg-[#014fff] text-white font-bold px-8 py-4 rounded-2xl text-lg hover:bg-[#0140cc] transition-colors">
-      <span>Estimer mes revenus</span>
+      <span id="owner-btn">Estimer mes revenus</span>
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
     </a>
   </div>
@@ -732,42 +736,42 @@ tailwind.config = {
             <g><g class="flc2"><rect class="flc3" y="5.04" width="149.08" height="101.23"/></g><g class="flc4"><rect class="flc5" x="96.01" width="97.67" height="108.42"/></g><g class="flc6"><rect class="flc7" x="213.14" y="21.58" width="460.03" height="113.1"/></g><g class="flc8"><rect class="flc7" x="130.19" y="109.16" width="29.89" height="20.93"/></g></g>
           </svg>
         </div>
-        <p class="text-gray-400 text-sm leading-relaxed">Conciergerie Airbnb leader en France. 2 000 logements gérés par des experts locaux.</p>
+        <p id="footer-desc" class="text-gray-400 text-sm leading-relaxed">Conciergerie Airbnb leader en France. 2 000 logements gérés par des experts locaux.</p>
       </div>
       <div>
-        <h4 class="text-white font-semibold mb-4">Destinations</h4>
+        <h4 id="footer-dest-heading" class="text-white font-semibold mb-4">Destinations</h4>
         <ul class="space-y-2 text-sm">
           <li><a href="https://travel.hostnfly.com/fr/destinations/paris" target="_blank" class="text-gray-400 hover:text-white transition-colors">Paris</a></li>
           <li><a href="https://travel.hostnfly.com/fr/destinations/chamonix" target="_blank" class="text-gray-400 hover:text-white transition-colors">Chamonix</a></li>
           <li><a href="https://travel.hostnfly.com/fr/destinations/cannes" target="_blank" class="text-gray-400 hover:text-white transition-colors">Cannes</a></li>
           <li><a href="https://travel.hostnfly.com/fr/destinations/saint-tropez" target="_blank" class="text-gray-400 hover:text-white transition-colors">Saint-Tropez</a></li>
           <li><a href="https://travel.hostnfly.com/fr/destinations/biarritz" target="_blank" class="text-gray-400 hover:text-white transition-colors">Biarritz</a></li>
-          <li><a href="https://travel.hostnfly.com/fr" target="_blank" class="text-[#dce0fb] hover:text-white transition-colors font-medium">Toutes →</a></li>
+          <li><a id="footer-all-dest" href="https://travel.hostnfly.com/fr" target="_blank" class="text-[#dce0fb] hover:text-white transition-colors font-medium">Toutes →</a></li>
         </ul>
       </div>
       <div>
-        <h4 class="text-white font-semibold mb-4">HostnFly</h4>
+        <h4 id="footer-hnf-heading" class="text-white font-semibold mb-4">HostnFly</h4>
         <ul class="space-y-2 text-sm">
-          <li><a href="https://www.hostnfly.com" target="_blank" class="text-gray-400 hover:text-white transition-colors">À propos</a></li>
-          <li><a href="https://www.hostnfly.com" target="_blank" class="text-gray-400 hover:text-white transition-colors">Propriétaires</a></li>
-          <li><a href="https://fr.trustpilot.com/review/www.hostnfly.com" target="_blank" class="text-gray-400 hover:text-white transition-colors">Avis voyageurs</a></li>
-          <li><a href="https://www.hostnfly.com/blog" target="_blank" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+          <li><a id="footer-about" href="https://www.hostnfly.com" target="_blank" class="text-gray-400 hover:text-white transition-colors">À propos</a></li>
+          <li><a id="footer-owners" href="https://www.hostnfly.com" target="_blank" class="text-gray-400 hover:text-white transition-colors">Propriétaires</a></li>
+          <li><a id="footer-reviews" href="https://fr.trustpilot.com/review/www.hostnfly.com" target="_blank" class="text-gray-400 hover:text-white transition-colors">Avis voyageurs</a></li>
+          <li><a id="footer-blog" href="https://www.hostnfly.com/blog" target="_blank" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
         </ul>
       </div>
       <div>
-        <h4 class="text-white font-semibold mb-4">Contact</h4>
+        <h4 id="footer-contact-heading" class="text-white font-semibold mb-4">Contact</h4>
         <ul class="space-y-2 text-sm text-gray-400">
-          <li>7j/7 de 8h à 22h</li>
+          <li id="footer-hours">7j/7 de 8h à 22h</li>
           <li><a href="mailto:contact@hostnfly.com" class="hover:text-white transition-colors">contact@hostnfly.com</a></li>
         </ul>
       </div>
     </div>
     <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-gray-500">
-      <span>© 2025 HostnFly · Tous droits réservés</span>
+      <span id="footer-copyright">© 2025 HostnFly · Tous droits réservés</span>
       <div class="flex gap-4">
-        <a href="https://www.hostnfly.com/mentions-legales" target="_blank" class="hover:text-gray-300 transition-colors">Mentions légales</a>
-        <a href="https://www.hostnfly.com/politique-de-confidentialite" target="_blank" class="hover:text-gray-300 transition-colors">Confidentialité</a>
-        <a href="https://www.hostnfly.com/cgv" target="_blank" class="hover:text-gray-300 transition-colors">CGV</a>
+        <a id="footer-legal" href="https://www.hostnfly.com/mentions-legales" target="_blank" class="hover:text-gray-300 transition-colors">Mentions légales</a>
+        <a id="footer-privacy" href="https://www.hostnfly.com/politique-de-confidentialite" target="_blank" class="hover:text-gray-300 transition-colors">Confidentialité</a>
+        <a id="footer-cgv" href="https://www.hostnfly.com/cgv" target="_blank" class="hover:text-gray-300 transition-colors">CGV</a>
       </div>
     </div>
   </div>
@@ -780,26 +784,328 @@ tailwind.config = {
     <div class="bg-gradient-to-br from-[#014fff] to-[#0140cc] px-8 pt-8 pb-6 text-white">
       <button onclick="closePopup()" class="absolute top-4 right-4 text-white/70 hover:text-white text-2xl leading-none font-light">×</button>
       <div class="text-4xl mb-3">🎁</div>
-      <h3 class="text-2xl font-bold mb-2">Obtenez -5% sur votre séjour</h3>
-      <p class="text-white/80 text-sm">Laissez votre email, nous vous envoyons votre code promo exclusif.</p>
+      <h3 id="popup-title" class="text-2xl font-bold mb-2">Obtenez -5% sur votre séjour</h3>
+      <p id="popup-desc" class="text-white/80 text-sm">Laissez votre email, nous vous envoyons votre code promo exclusif.</p>
     </div>
     <div class="px-8 py-6">
       <div id="popup-form">
         <div class="flex gap-2 mb-3">
           <input id="popup-email" type="email" placeholder="votre@email.com" class="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-[#014fff] focus:ring-2 focus:ring-[#dce0fb] transition-all"/>
-          <button onclick="submitPopup()" class="bg-[#014fff] text-white font-bold px-5 py-3 rounded-xl text-sm hover:bg-[#0140cc] transition-colors whitespace-nowrap">Recevoir mon code</button>
+          <button id="popup-submit-btn" onclick="submitPopup()" class="bg-[#014fff] text-white font-bold px-5 py-3 rounded-xl text-sm hover:bg-[#0140cc] transition-colors whitespace-nowrap">Recevoir mon code</button>
         </div>
-        <button onclick="closePopup()" class="w-full text-center text-xs text-gray-400 hover:text-gray-600 py-1">Non merci</button>
+        <button id="popup-skip-btn" onclick="closePopup()" class="w-full text-center text-xs text-gray-400 hover:text-gray-600 py-1">Non merci</button>
       </div>
       <div id="popup-success" class="hidden text-center py-4">
         <div class="text-4xl mb-3">✅</div>
-        <p class="text-gray-700">Merci ! Votre code <strong class="text-[#014fff]">BIENVENUE5</strong> vous a été envoyé.<br/><span class="text-sm text-gray-500">(-5% sur votre prochain séjour)</span></p>
+        <p id="popup-success-msg" class="text-gray-700">Merci ! Votre code <strong class="text-[#014fff]">BIENVENUE5</strong> vous a été envoyé.<br/><span class="text-sm text-gray-500">(-5% sur votre prochain séjour)</span></p>
       </div>
     </div>
   </div>
 </div>
 
 <script>
+// ===== I18N =====
+let currentLang = localStorage.getItem('hnf_lang') || 'fr';
+
+const LANG = {
+  fr: {
+    nav_owner: 'Mettre mon logement en location',
+    nav_listings: 'Tous les logements',
+    nav_compact: 'Destination \u00b7 Dates \u00b7 Voyageurs',
+    hero_badge: 'Logements v\u00e9rifi\u00e9s \u00b7 Experts locaux \u00b7 Service 7j/7',
+    hero_title1: '2\u202f000 logements d\'exception',
+    hero_title2: 'en France',
+    hero_subtitle: 'g\u00e9r\u00e9s par des experts locaux',
+    sf_dest: 'Destination',
+    sf_dest_ph: 'O\u00f9 souhaitez-vous aller\u00a0?',
+    sf_checkin: 'Arriv\u00e9e',
+    sf_checkout: 'D\u00e9part',
+    sf_date_ph: 'Ajouter une date',
+    sf_guests: 'Voyageurs',
+    sf_guests_ph: 'Ajouter des voyageurs',
+    sf_search: 'Rechercher',
+    g_adults: 'Adultes', g_adults_sub: '18 ans et +',
+    g_children: 'Enfants', g_children_sub: '3 \u00e0 17 ans',
+    g_babies: 'B\u00e9b\u00e9s', g_babies_sub: 'Moins de 3 ans',
+    g_validate: 'Valider',
+    g_adult_s: 'adulte', g_adult_p: 'adultes',
+    g_child_s: 'enfant', g_child_p: 'enfants',
+    g_baby_s: 'b\u00e9b\u00e9', g_baby_p: 'b\u00e9b\u00e9s',
+    popular: 'Populaires\u00a0:',
+    tp_excellent: 'Excellent',
+    tp_based: 'Bas\u00e9 sur 300+ avis v\u00e9rifi\u00e9s',
+    tp_see: 'Voir les avis \u2192',
+    dest_title: 'Explorez nos destinations',
+    dest_sub: 'Des logements d\'exception dans toute la France',
+    cat_all: 'Toutes', cat_ski: '\u26f7\ufe0f Ski & Montagne', cat_mer: '\ud83c\udfd6\ufe0f Bord de mer', cat_ville: '\ud83c\udfd9\ufe0f Villes',
+    dest_more: 'Voir les {n} autres destinations',
+    dest_less: 'Voir moins',
+    dest_props: 'logements',
+    coeur_title: 'Nos villas coup de c\u0153ur',
+    coeur_sub: 'Une s\u00e9lection d\'adresses d\'exception g\u00e9r\u00e9es par HostnFly',
+    coeur_badge: 'Coup de c\u0153ur \u2764\ufe0f',
+    coeur_from: '\u00e0 partir de', coeur_night: '\u20ac/nuit',
+    coeur_reviews: 'avis',
+    typo_title: 'Trouvez le logement id\u00e9al',
+    typo_sub: 'Des s\u00e9lections pens\u00e9es pour votre s\u00e9jour',
+    typo_pool_title: 'Avec piscine',
+    typo_pool_desc: 'Profitez d\'une piscine priv\u00e9e pour votre s\u00e9jour',
+    typo_garden_title: 'Maison avec jardin',
+    typo_garden_desc: 'Un espace ext\u00e9rieur privatif pour se ressourcer',
+    typo_family_title: 'Parfait pour familles',
+    typo_family_desc: '3 chambres et plus pour des vacances en grand',
+    typo_cta: 'Voir les logements',
+    why_title: 'Pourquoi r\u00e9server avec HostnFly\u00a0?',
+    why1_title: 'Meilleur prix garanti',
+    why1_desc: 'En r\u00e9servant directement, vous b\u00e9n\u00e9ficiez du meilleur tarif disponible, sans frais cach\u00e9s.',
+    why2_title: 'Experts locaux 7j/7',
+    why2_desc: 'Nos \u00e9quipes pr\u00e9sentes sur le terrain vous accompagnent avant, pendant et apr\u00e8s votre s\u00e9jour.',
+    why3_title: 'Logements v\u00e9rifi\u00e9s',
+    why3_desc: 'Chaque logement est s\u00e9lectionn\u00e9, photographi\u00e9 et inspect\u00e9 par nos \u00e9quipes. Note moyenne 4.88 \u2b50',
+    concierge_title: 'Nos \u00e9quipes locales',
+    concierge_sub: 'Des experts du territoire, disponibles 7j/7 pour vous',
+    avis_title: 'Ce que disent nos voyageurs',
+    avis_sub: 'Des milliers de voyageurs nous font confiance chaque ann\u00e9e',
+    avis1_text: '"Logement impeccable, \u00e9quipe r\u00e9active et tr\u00e8s professionnelle. Check-in parfait, le chalet \u00e9tait exactement comme sur les photos. On reviendra\u00a0!"',
+    avis1_name: 'Sophie M.', avis1_loc: 'Chamonix \u00b7 F\u00e9vrier 2025',
+    avis2_text: '"Villa absolument magnifique face \u00e0 la mer. Les \u00e9quipes HostnFly ont \u00e9t\u00e9 aux petits soins. R\u00e9servation fluide, communication parfaite. Je recommande."',
+    avis2_name: 'Thomas B.', avis2_loc: 'Saint-Tropez \u00b7 Ao\u00fbt 2025',
+    avis3_text: '"Tout \u00e9tait parfait du d\u00e9but \u00e0 la fin. L\'appartement parisien d\u00e9passait nos attentes, et le support HostnFly a \u00e9t\u00e9 disponible \u00e0 toute heure. Merci\u00a0!"',
+    avis3_name: 'Claire & Pierre D.', avis3_loc: 'Paris \u00b7 Novembre 2025',
+    faq_title: 'Questions fr\u00e9quentes',
+    owner_title: 'Vous \u00eates propri\u00e9taire\u00a0?',
+    owner_desc: 'Confiez votre logement \u00e0 HostnFly et b\u00e9n\u00e9ficiez d\'une gestion compl\u00e8te\u00a0: accueil, m\u00e9nage, linge de maison et optimisation des revenus. Rejoignez 2\u202f000 propri\u00e9taires qui nous font confiance.',
+    owner_btn: 'Estimer mes revenus',
+    footer_desc: 'Conciergerie Airbnb leader en France. 2\u202f000 logements g\u00e9r\u00e9s par des experts locaux.',
+    footer_dest_h: 'Destinations', footer_hnf_h: 'HostnFly', footer_contact_h: 'Contact',
+    footer_hours: '7j/7 de 8h \u00e0 22h',
+    footer_about: '\u00c0 propos', footer_owners: 'Propri\u00e9taires', footer_reviews: 'Avis voyageurs', footer_blog: 'Blog',
+    footer_all: 'Toutes \u2192', footer_legal: 'Mentions l\u00e9gales', footer_privacy: 'Confidentialit\u00e9', footer_cgv: 'CGV',
+    footer_copyright: '\u00a9 2025 HostnFly \u00b7 Tous droits r\u00e9serv\u00e9s',
+    popup_title: 'Obtenez -5% sur votre s\u00e9jour',
+    popup_desc: 'Laissez votre email, nous vous envoyons votre code promo exclusif.',
+    popup_ph: 'votre@email.com',
+    popup_btn: 'Recevoir mon code', popup_skip: 'Non merci',
+    popup_success: 'Merci\u00a0! Votre code <strong class="text-[#014fff]">BIENVENUE5</strong> vous a \u00e9t\u00e9 envoy\u00e9.<br/><span class="text-sm text-gray-500">(-5% sur votre prochain s\u00e9jour)</span>',
+    map_popup_props: 'logements',
+  },
+  en: {
+    nav_owner: 'List my property',
+    nav_listings: 'All properties',
+    nav_compact: 'Destination \u00b7 Dates \u00b7 Guests',
+    hero_badge: 'Verified properties \u00b7 Local experts \u00b7 7-day service',
+    hero_title1: '2,000 exceptional properties',
+    hero_title2: 'across France',
+    hero_subtitle: 'managed by local experts',
+    sf_dest: 'Destination',
+    sf_dest_ph: 'Where do you want to go?',
+    sf_checkin: 'Check-in',
+    sf_checkout: 'Check-out',
+    sf_date_ph: 'Add a date',
+    sf_guests: 'Guests',
+    sf_guests_ph: 'Add guests',
+    sf_search: 'Search',
+    g_adults: 'Adults', g_adults_sub: '18 and over',
+    g_children: 'Children', g_children_sub: '3 to 17 years',
+    g_babies: 'Babies', g_babies_sub: 'Under 3 years',
+    g_validate: 'Confirm',
+    g_adult_s: 'adult', g_adult_p: 'adults',
+    g_child_s: 'child', g_child_p: 'children',
+    g_baby_s: 'baby', g_baby_p: 'babies',
+    popular: 'Popular:',
+    tp_excellent: 'Excellent',
+    tp_based: 'Based on 300+ verified reviews',
+    tp_see: 'See all reviews \u2192',
+    dest_title: 'Explore our destinations',
+    dest_sub: 'Exceptional properties throughout France',
+    cat_all: 'All', cat_ski: '\u26f7\ufe0f Ski & Mountains', cat_mer: '\ud83c\udfd6\ufe0f Seaside', cat_ville: '\ud83c\udfd9\ufe0f Cities',
+    dest_more: 'See {n} more destinations',
+    dest_less: 'Show less',
+    dest_props: 'properties',
+    coeur_title: 'Our favourite villas',
+    coeur_sub: 'A curated selection of exceptional addresses managed by HostnFly',
+    coeur_badge: 'Staff pick \u2764\ufe0f',
+    coeur_from: 'from', coeur_night: '\u20ac/night',
+    coeur_reviews: 'reviews',
+    typo_title: 'Find your perfect stay',
+    typo_sub: 'Curated selections tailored to your trip',
+    typo_pool_title: 'With pool',
+    typo_pool_desc: 'Enjoy a private pool during your stay',
+    typo_garden_title: 'House with garden',
+    typo_garden_desc: 'A private outdoor space to recharge',
+    typo_family_title: 'Perfect for families',
+    typo_family_desc: '3+ bedrooms for a spacious family holiday',
+    typo_cta: 'View properties',
+    why_title: 'Why book with HostnFly?',
+    why1_title: 'Best price guaranteed',
+    why1_desc: 'Book directly and get the best available rate, with no hidden fees.',
+    why2_title: 'Local experts 7 days/7',
+    why2_desc: 'Our on-the-ground teams support you before, during and after your stay.',
+    why3_title: 'Verified properties',
+    why3_desc: 'Every property is selected, photographed and inspected by our teams. Average rating 4.88 \u2b50',
+    concierge_title: 'Our local teams',
+    concierge_sub: 'Local territory experts, available 7 days a week',
+    avis_title: 'What our guests say',
+    avis_sub: 'Thousands of travellers trust us every year',
+    avis1_text: '"Impeccable property, responsive and very professional team. Perfect check-in, the chalet was exactly as in the photos. We\'ll be back!"',
+    avis1_name: 'Sophie M.', avis1_loc: 'Chamonix \u00b7 February 2025',
+    avis2_text: '"Absolutely magnificent villa facing the sea. The HostnFly team was incredibly attentive. Smooth booking, perfect communication. Highly recommend."',
+    avis2_name: 'Thomas B.', avis2_loc: 'Saint-Tropez \u00b7 August 2025',
+    avis3_text: '"Everything was perfect from start to finish. The Parisian apartment exceeded our expectations, and HostnFly support was available around the clock. Thank you!"',
+    avis3_name: 'Claire & Pierre D.', avis3_loc: 'Paris \u00b7 November 2025',
+    faq_title: 'Frequently asked questions',
+    owner_title: 'Are you a property owner?',
+    owner_desc: 'Entrust your property to HostnFly and benefit from full management: guest welcome, cleaning, linen and revenue optimisation. Join 2,000 owners who trust us.',
+    owner_btn: 'Estimate my revenue',
+    footer_desc: "France's leading Airbnb concierge. 2,000 properties managed by local experts.",
+    footer_dest_h: 'Destinations', footer_hnf_h: 'HostnFly', footer_contact_h: 'Contact',
+    footer_hours: '7 days/7, 8am \u2013 10pm',
+    footer_about: 'About', footer_owners: 'Property owners', footer_reviews: 'Guest reviews', footer_blog: 'Blog',
+    footer_all: 'All \u2192', footer_legal: 'Legal notice', footer_privacy: 'Privacy', footer_cgv: 'T&Cs',
+    footer_copyright: '\u00a9 2025 HostnFly \u00b7 All rights reserved',
+    popup_title: 'Get 5% off your stay',
+    popup_desc: 'Leave your email and we\'ll send your exclusive promo code.',
+    popup_ph: 'your@email.com',
+    popup_btn: 'Get my code', popup_skip: 'No thanks',
+    popup_success: 'Thank you! Your code <strong class="text-[#014fff]">WELCOME5</strong> has been sent.<br/><span class="text-sm text-gray-500">(-5% off your next stay)</span>',
+    map_popup_props: 'properties',
+  }
+};
+
+const FAQ_DATA_EN = [
+  {q:"How does direct booking work?", a:"When booking on this site, you are redirected directly to our partner booking engine. No additional intermediary is involved \u2014 you deal directly with HostnFly."},
+  {q:"Will I get the best price?", a:"Yes. The rates shown here are our official rates. We are committed to offering you the same price or better than on other platforms."},
+  {q:"How does check-in work?", a:"Our local team will contact you a few days before your arrival with all the practical details: access code, key location, emergency number. We also offer in-person check-ins on request."},
+  {q:"What is the cancellation policy?", a:"Our cancellation conditions vary by property and period. They are clearly indicated before any booking confirmation. We offer flexible and non-refundable options to suit your preferences."},
+  {q:"Can I contact a local expert?", a:"Absolutely. Every destination is managed by a local team available 7 days a week. You'll receive a direct contact number as soon as your booking is confirmed."},
+  {q:"Are the properties verified?", a:"Yes. Every property is inspected by our teams before going live. We conduct regular visits and handle all guest feedback to maintain a consistently high quality standard."},
+];
+
+function t(key){ return (LANG[currentLang]||LANG.fr)[key]||key; }
+
+function smilyLang(){ return currentLang==='en'?'en':'fr'; }
+
+function setLang(lang){
+  currentLang=lang;
+  localStorage.setItem('hnf_lang',lang);
+  // Update button styles
+  document.getElementById('btn-lang-fr').className = lang==='fr'
+    ? 'px-3 py-1.5 bg-[#014fff] text-white text-xs font-bold'
+    : 'px-3 py-1.5 text-gray-400 hover:bg-gray-50 transition-colors text-xs font-bold';
+  document.getElementById('btn-lang-en').className = lang==='en'
+    ? 'px-3 py-1.5 bg-[#014fff] text-white text-xs font-bold'
+    : 'px-3 py-1.5 text-gray-400 hover:bg-gray-50 transition-colors text-xs font-bold';
+  // Update html lang attribute
+  document.documentElement.lang = lang==='en'?'en':'fr';
+  applyTranslations();
+  renderDestGrid();
+  renderCoups();
+  renderFAQ();
+}
+
+function setEl(id,text){ const e=document.getElementById(id); if(e) e.textContent=text; }
+function setHTML(id,html){ const e=document.getElementById(id); if(e) e.innerHTML=html; }
+
+function applyTranslations(){
+  const T=LANG[currentLang]||LANG.fr;
+  // Navbar
+  setEl('nav-owner-link', T.nav_owner);
+  setEl('nav-listings-text', T.nav_listings);
+  setEl('nav-compact-text', T.nav_compact);
+  // Update listings href for lang
+  const listBtn=document.getElementById('nav-listings-btn');
+  if(listBtn) listBtn.href=`https://travel.hostnfly.com/${smilyLang()}/rentals/search`;
+  // Hero
+  setEl('hero-badge-text', T.hero_badge);
+  setEl('hero-title1', T.hero_title1);
+  setEl('hero-title2', T.hero_title2);
+  setEl('hero-subtitle', T.hero_subtitle);
+  // Search bar
+  setEl('sf-dest-label', T.sf_dest);
+  const di=document.getElementById('dest-input-el'); if(di) di.placeholder=T.sf_dest_ph;
+  setEl('sf-checkin-label', T.sf_checkin);
+  setEl('sf-checkout-label', T.sf_checkout);
+  const cd=document.getElementById('checkin-display'); if(cd&&!checkin){cd.textContent=T.sf_date_ph;}
+  const od=document.getElementById('checkout-display'); if(od&&!checkout){od.textContent=T.sf_date_ph;}
+  setEl('sf-guests-label', T.sf_guests);
+  const gd=document.getElementById('guests-display'); if(gd&&gd.dataset.empty!=='false') gd.textContent=T.sf_guests_ph;
+  setEl('search-btn-text', T.sf_search);
+  // Guest picker
+  setEl('guest-adults-lbl', T.g_adults); setEl('guest-adults-sub', T.g_adults_sub);
+  setEl('guest-children-lbl', T.g_children); setEl('guest-children-sub', T.g_children_sub);
+  setEl('guest-babies-lbl', T.g_babies); setEl('guest-babies-sub', T.g_babies_sub);
+  setEl('guest-validate-btn', T.g_validate);
+  // Popular tags
+  setEl('popular-label', T.popular);
+  // Trustpilot
+  setEl('tp-excellent', T.tp_excellent);
+  setEl('tp-based', T.tp_based);
+  setEl('tp-see', T.tp_see);
+  // Destinations section
+  setEl('dest-section-title', T.dest_title);
+  setEl('dest-section-sub', T.dest_sub);
+  setEl('cat-all', T.cat_all);
+  setEl('cat-ski', T.cat_ski);
+  setEl('cat-mer', T.cat_mer);
+  setEl('cat-ville', T.cat_ville);
+  // Coups de coeur
+  setEl('coeur-title', T.coeur_title);
+  setEl('coeur-sub', T.coeur_sub);
+  // Typologies
+  setEl('typo-title', T.typo_title);
+  setEl('typo-sub', T.typo_sub);
+  setEl('typo-pool-title', T.typo_pool_title); setEl('typo-pool-desc', T.typo_pool_desc); setEl('typo-pool-cta', T.typo_cta);
+  setEl('typo-garden-title', T.typo_garden_title); setEl('typo-garden-desc', T.typo_garden_desc); setEl('typo-garden-cta', T.typo_cta);
+  setEl('typo-family-title', T.typo_family_title); setEl('typo-family-desc', T.typo_family_desc); setEl('typo-family-cta', T.typo_cta);
+  // Update typology links
+  const pl=document.getElementById('typo-pool-link'); if(pl) pl.href=`https://travel.hostnfly.com/${smilyLang()}/rentals/search?amenity_mode=all&pool_private=1&rentals_tag_mode=all`;
+  const gl=document.getElementById('typo-garden-link'); if(gl) gl.href=`https://travel.hostnfly.com/${smilyLang()}/rentals/search?amenity_mode=all&garden=1&rentals_tag_mode=all`;
+  const fl=document.getElementById('typo-family-link'); if(fl) fl.href=`https://travel.hostnfly.com/${smilyLang()}/rentals/search?amenity_mode=all&bedrooms_count=3&rentals_tag_mode=all`;
+  // Pourquoi
+  setEl('why-title', T.why_title);
+  setEl('why1-title', T.why1_title); setEl('why1-desc', T.why1_desc);
+  setEl('why2-title', T.why2_title); setEl('why2-desc', T.why2_desc);
+  setEl('why3-title', T.why3_title); setEl('why3-desc', T.why3_desc);
+  // Conciergeries
+  setEl('concierge-title', T.concierge_title);
+  setEl('concierge-sub', T.concierge_sub);
+  // Avis
+  setEl('avis-title', T.avis_title);
+  setEl('avis-sub', T.avis_sub);
+  setEl('avis1-text', T.avis1_text); setEl('avis1-name', T.avis1_name); setEl('avis1-loc', T.avis1_loc);
+  setEl('avis2-text', T.avis2_text); setEl('avis2-name', T.avis2_name); setEl('avis2-loc', T.avis2_loc);
+  setEl('avis3-text', T.avis3_text); setEl('avis3-name', T.avis3_name); setEl('avis3-loc', T.avis3_loc);
+  // FAQ
+  setEl('faq-heading', T.faq_title);
+  // CTA
+  setEl('owner-title', T.owner_title);
+  setEl('owner-desc', T.owner_desc);
+  setEl('owner-btn', T.owner_btn);
+  // Footer
+  setEl('footer-desc', T.footer_desc);
+  setEl('footer-dest-heading', T.footer_dest_h);
+  setEl('footer-hnf-heading', T.footer_hnf_h);
+  setEl('footer-contact-heading', T.footer_contact_h);
+  setEl('footer-hours', T.footer_hours);
+  setEl('footer-about', T.footer_about);
+  setEl('footer-owners', T.footer_owners);
+  setEl('footer-reviews', T.footer_reviews);
+  setEl('footer-blog', T.footer_blog);
+  setEl('footer-all-dest', T.footer_all);
+  setEl('footer-legal', T.footer_legal);
+  setEl('footer-privacy', T.footer_privacy);
+  setEl('footer-cgv', T.footer_cgv);
+  setEl('footer-copyright', T.footer_copyright);
+  // Popup
+  setEl('popup-title', T.popup_title);
+  setEl('popup-desc', T.popup_desc);
+  const pe=document.getElementById('popup-email'); if(pe) pe.placeholder=T.popup_ph;
+  setEl('popup-submit-btn', T.popup_btn);
+  setEl('popup-skip-btn', T.popup_skip);
+  // Update guest display
+  updateGuestsDisplay();
+}
+
 // ===== DATA =====
 const destinations = [
   {name:'Chamonix',slug:'chamonix',region:'Haute-Savoie',cat:['ski'],rating:4.93,count:87,img:'1684670157250-acf10312770b',lat:45.9237,lng:6.8694,priority:true,tags:['⛷️ Ski','🏔️ Mont-Blanc']},
@@ -938,7 +1244,7 @@ function fmtDate(d){if(!d)return '';const y=d.getFullYear(),m=String(d.getMonth(
 function fmtDateFr(d){if(!d)return '';const months=['jan.','fév.','mars','avr.','mai','juin','juil.','août','sep.','oct.','nov.','déc.'];return `${d.getDate()} ${months[d.getMonth()]}`}
 function guestTotal(){return guests.adults + guests.children}
 function smilyDestUrl(slug,params={}){
-  let url=`https://travel.hostnfly.com/fr/destinations/${slug}`;
+  let url=`https://travel.hostnfly.com/${smilyLang()}/destinations/${slug}`;
   const p=[];
   if(params.adults) p.push(`adults=${params.adults}`);
   if(params.checkin) p.push(`checkin=${params.checkin}`);
@@ -990,12 +1296,12 @@ function adjustGuest(cat,delta){
 }
 function updateGuestsDisplay(){
   const parts=[];
-  if(guests.adults) parts.push(guests.adults===1?'1 adulte':`${guests.adults} adultes`);
-  if(guests.children) parts.push(guests.children===1?'1 enfant':`${guests.children} enfants`);
-  if(guests.babies) parts.push(guests.babies===1?'1 bébé':`${guests.babies} bébés`);
+  if(guests.adults) parts.push(guests.adults===1?`1 ${t('g_adult_s')}`:`${guests.adults} ${t('g_adult_p')}`);
+  if(guests.children) parts.push(guests.children===1?`1 ${t('g_child_s')}`:`${guests.children} ${t('g_child_p')}`);
+  if(guests.babies) parts.push(guests.babies===1?`1 ${t('g_baby_s')}`:`${guests.babies} ${t('g_baby_p')}`);
   const el=document.getElementById('guests-display');
-  if(parts.length){el.textContent=parts.join(' · ');el.classList.remove('text-gray-400');el.classList.add('text-gray-800');}
-  else{el.textContent='Ajouter des voyageurs';el.classList.add('text-gray-400');el.classList.remove('text-gray-800');}
+  if(parts.length){el.textContent=parts.join(' · ');el.classList.remove('text-gray-400');el.classList.add('text-gray-800');el.dataset.empty='false';}
+  else{el.textContent=t('sf_guests_ph');el.classList.add('text-gray-400');el.classList.remove('text-gray-800');el.dataset.empty='true';}
 }
 
 // ===== CALENDAR =====
@@ -1152,7 +1458,7 @@ function positionDrop(){
 
 function openDestDrop(){
   document.getElementById('sf-dest').classList.add('sf-active');
-  const v=document.getElementById('dest-input').value;
+  const v=document.getElementById('dest-input-el').value;
   if(v.length>0) renderDrop(v);
 }
 function hideDrop(){
@@ -1214,26 +1520,26 @@ function renderDrop(v){
 
 function selectDest(slug,name){
   selectedDestSlug=slug;
-  document.getElementById('dest-input').value=name;
+  document.getElementById('dest-input-el').value=name;
   hideDrop();
 }
 
 function setDestAndSearch(slug,name){
   selectedDestSlug=slug;
-  document.getElementById('dest-input').value=name;
+  document.getElementById('dest-input-el').value=name;
   doSearch();
 }
 
 function doSearch(){
   let slug=selectedDestSlug;
   if(!slug){
-    const v=normalize(document.getElementById('dest-input').value);
+    const v=normalize(document.getElementById('dest-input-el').value);
     const zoneSlug=CITY_ZONE[v];
     if(zoneSlug) slug=zoneSlug;
     else{
       const match=destinations.find(d=>normalize(d.name).includes(v)||normalize(d.region).includes(v));
       if(match) slug=match.slug;
-      else{window.open('https://travel.hostnfly.com/fr','_blank');return;}
+      else{window.open('https://travel.hostnfly.com/'+smilyLang(),'_blank');return;}
     }
   }
   const params={adults:guestTotal()};
@@ -1278,10 +1584,10 @@ function renderDestGrid(){
   if(all.length>initCount&&!mapVisibleSlugs){
     showMoreWrap.classList.remove('hidden');
     if(showAllDest){
-      label.textContent='Voir moins';
+      label.textContent=t('dest_less');
       if(icon) icon.style.transform='rotate(180deg)';
     } else {
-      label.textContent=`Voir les ${all.length-initCount} autres destinations`;
+      label.textContent=t('dest_more').replace('{n}',all.length-initCount);
       if(icon) icon.style.transform='';
     }
   } else {
@@ -1295,7 +1601,7 @@ function destCardHTML(d){
     <a href="${url}" target="_blank" class="dest-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 block">
       <div class="relative h-44 overflow-hidden">
         <img src="${imgUrl(d.img)}" alt="${d.name}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy"/>
-        <div class="absolute top-3 left-3 bg-[#014fff] text-white text-xs font-bold px-2.5 py-1 rounded-full">${d.count} logements</div>
+        <div class="absolute top-3 left-3 bg-[#014fff] text-white text-xs font-bold px-2.5 py-1 rounded-full">${d.count} ${t('dest_props')}</div>
         <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2 py-1 rounded-full text-gray-800">⭐ ${d.rating}</div>
       </div>
       <div class="p-4">
@@ -1314,8 +1620,8 @@ function renderCoups(){
     <a href="https://travel.hostnfly.com/fr/rentals/${c.slug}?currency=EUR" target="_blank" class="dest-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 block">
       <div class="relative h-56 overflow-hidden">
         <img src="${imgUrl(c.img)}" alt="${c.title}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy"/>
-        <div class="absolute top-3 left-3 bg-white text-red-500 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">Coup de cœur ❤️</div>
-        <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm text-xs font-bold px-2.5 py-1.5 rounded-full text-gray-800">à partir de ${c.price}€/nuit</div>
+        <div class="absolute top-3 left-3 bg-white text-red-500 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">${t('coeur_badge')}</div>
+        <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm text-xs font-bold px-2.5 py-1.5 rounded-full text-gray-800">${t('coeur_from')} ${c.price}${t('coeur_night')}</div>
       </div>
       <div class="p-4">
         <div class="font-bold text-[#101923] text-base mb-1 leading-snug">${c.title}</div>
@@ -1326,7 +1632,7 @@ function renderCoups(){
         <div class="flex items-center gap-2 mb-3">
           <span class="text-[#00B67A] text-sm">★★★★★</span>
           <span class="text-xs font-semibold text-gray-800">${c.rating}</span>
-          <span class="text-xs text-gray-400">(${c.reviews} avis)</span>
+          <span class="text-xs text-gray-400">(${c.reviews} ${t('coeur_reviews')})</span>
         </div>
         <div class="flex flex-wrap gap-1.5">${c.tags.slice(0,3).map(t=>`<span class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">${t}</span>`).join('')}</div>
       </div>
@@ -1337,7 +1643,7 @@ function renderCoups(){
 // ===== FAQ =====
 function renderFAQ(){
   const list=document.getElementById('faq-list');
-  list.innerHTML=FAQ_DATA.map((f,i)=>`
+  list.innerHTML=(currentLang==='en'?FAQ_DATA_EN:FAQ_DATA).map((f,i)=>`
     <div class="py-5" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
       <button onclick="toggleFAQ(${i})" class="w-full flex items-center justify-between gap-4 text-left" aria-expanded="false" aria-controls="faq-answer-${i}">
         <span class="font-semibold text-[#101923] text-base" itemprop="name">${f.q}</span>
@@ -1353,7 +1659,7 @@ function renderFAQ(){
   const faqSchema={
     "@context":"https://schema.org",
     "@type":"FAQPage",
-    "mainEntity":FAQ_DATA.map(f=>({
+    "mainEntity":(currentLang==='en'?FAQ_DATA_EN:FAQ_DATA).map(f=>({
       "@type":"Question",
       "name":f.q,
       "acceptedAnswer":{"@type":"Answer","text":f.a}
@@ -1387,7 +1693,7 @@ function initMap(){
     const marker=L.circleMarker([d.lat,d.lng],{
       radius:9,fillColor:color,color:'#fff',weight:2,fillOpacity:0.85
     }).addTo(leafletMap);
-    marker.bindPopup(`<b>${d.name}</b><br>⭐ ${d.rating} · ${d.count} logements`);
+    marker.bindPopup(`<b>${d.name}</b><br>⭐ ${d.rating} · ${d.count} ${t('map_popup_props')}`);  
     marker.on('click',()=>{
       const url=smilyDestUrl(d.slug,{adults:guestTotal(),checkin:fmtDate(checkin),checkout:fmtDate(checkout)});
       window.open(url,'_blank');
@@ -1439,6 +1745,15 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderCoups();
   renderFAQ();
   initMap();
+  applyTranslations();
+  // Set initial lang button state
+  const initLang=currentLang;
+  document.getElementById('btn-lang-fr').className = initLang==='fr'
+    ? 'px-3 py-1.5 bg-[#014fff] text-white text-xs font-bold'
+    : 'px-3 py-1.5 text-gray-400 hover:bg-gray-50 transition-colors text-xs font-bold';
+  document.getElementById('btn-lang-en').className = initLang==='en'
+    ? 'px-3 py-1.5 bg-[#014fff] text-white text-xs font-bold'
+    : 'px-3 py-1.5 text-gray-400 hover:bg-gray-50 transition-colors text-xs font-bold';
   if(!localStorage.getItem('hnf_popup_shown')){
     setTimeout(()=>{document.getElementById('email-popup').classList.add('show');},10000);
   }
